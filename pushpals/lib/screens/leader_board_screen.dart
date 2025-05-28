@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pushpals/widgets/app_design_widget.dart';
+import 'package:pushpals/widgets/bottom_nav_widget.dart';
 import 'package:pushpals/widgets/player_tile_widget.dart';
 import 'package:pushpals/widgets/stats_card_widget.dart';
 
@@ -10,6 +11,7 @@ class LeaderboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppDesign(
       title: 'Leaderborad',
+      bottomWidget: BottomNavWidget(currentIndex: 0, onTap: (index){}),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -42,6 +44,8 @@ class LeaderboardScreen extends StatelessWidget {
           ),
         ],
       ),
+      
     );
+    
   }
 }

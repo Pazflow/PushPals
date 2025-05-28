@@ -4,12 +4,14 @@ class AppDesign extends StatelessWidget {
   final String? title;
   final Widget child;
   final bool showBack;
+  final Widget? bottomWidget;
 
   const AppDesign({
     super.key,
     this.title,
     required this.child,
     this.showBack = true,
+    this.bottomWidget,
   });
 
   @override
@@ -35,6 +37,7 @@ class AppDesign extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: child,
       ),
+      bottomNavigationBar: bottomWidget,
     );
   }
 }
