@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:pushpals/screens/leader_board_screen.dart';
+import 'package:pushpals/screens/leader_board_screen.dart';
+import 'package:pushpals/screens/login_screen.dart';
 import 'package:pushpals/screens/profile_screen.dart';
+//import 'package:pushpals/screens/leader_board_screen.dart';
+//import 'package:pushpals/screens/profile_screen.dart';
+import 'package:pushpals/screens/profile_setup_screen.dart';
 //import 'package:pushpals/widgets/custom_input_field.dart';
 //import 'package:pushpals/widgets/login_widget.dart';
 //import 'package:pushpals/widgets/profile_widget.dart';
@@ -39,13 +43,13 @@ class WidgetPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Hier wird das Widget ausgewählt
-  final Widget widgetToShow = const ProfileScreen();
+  final Widget widgetToShow = const LoginWidget();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Widget Preview'),
       ),
       body: Center(
-        child: widgetToShow,// SaveButton(onPressed: (){}),
+        child: widgetToShow,// SaveButton(onPressed: (){}), wenn man nur den button sehen möchte, dann hier widgetToShow raus, button rein, und oben final Widget auskommentieren
       ),
     );
   }

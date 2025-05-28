@@ -6,7 +6,7 @@ class PlayerTile extends StatelessWidget {
   final int level;
   final String avatarUrl;
   final Color color;
-  final String icon;
+  final dynamic icon; // <- erlaubt IconData oder String
 
   const PlayerTile({
     super.key,
@@ -24,6 +24,15 @@ class PlayerTile extends StatelessWidget {
         ? NetworkImage(avatarUrl)
         : AssetImage(avatarUrl) as ImageProvider;
 
+    Widget iconWidget;
+    if (icon is IconData) {
+      iconWidget = Icon(icon, color: Colors.white, size: 20);
+    } else if (icon is String) {
+      iconWidget = Text(icon, style: const TextStyle(fontSize: 20));
+    } else {
+      iconWidget = const SizedBox.shrink();
+    }
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -33,7 +42,7 @@ class PlayerTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(icon, style: const TextStyle(fontSize: 20)),
+          iconWidget,
           const SizedBox(width: 8),
           CircleAvatar(
             backgroundImage: avatarImage,

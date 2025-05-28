@@ -4,11 +4,7 @@ class StatsCard extends StatelessWidget {
   final int level;
   final int challenges;
 
-  const StatsCard({
-    super.key,
-    required this.level,
-    required this.challenges,
-  });
+  const StatsCard({super.key, required this.level, required this.challenges});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +29,16 @@ class StatsCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildStat(icon: '📈', value: level.toString(), label: 'Level'),
-              _buildStat(icon: '🏋️‍♂️', value: challenges.toString(), label: 'Challenges'),
+              _buildStat(
+                icon: Icons.show_chart,
+                value: level.toString(),
+                label: 'Level',
+              ),
+              _buildStat(
+                icon: '🏋️‍♂️',
+                value: challenges.toString(),
+                label: 'Challenges',
+              ),
             ],
           ),
         ],
@@ -43,13 +47,23 @@ class StatsCard extends StatelessWidget {
   }
 
   Widget _buildStat({
-    required String icon,
+    required dynamic icon, // <-- dynamic statt String
     required String value,
     required String label,
   }) {
+    Widget iconWidget;
+
+    if (icon is IconData) {
+      iconWidget = Icon(icon, color: Colors.white, size: 24);
+    } else if (icon is String) {
+      iconWidget = Text(icon, style: const TextStyle(fontSize: 24));
+    } else {
+      iconWidget = const SizedBox.shrink(); // Fallback
+    }
+
     return Column(
       children: [
-        Text(icon, style: const TextStyle(fontSize: 24)),
+        iconWidget,
         const SizedBox(height: 8),
         Text(value, style: const TextStyle(color: Colors.white, fontSize: 20)),
         Text(label, style: const TextStyle(color: Colors.white54)),
