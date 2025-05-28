@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/login_widget.dart';
+//import 'package:pushpals/widgets/custom_input_field.dart';
+//import 'package:pushpals/widgets/login_widget.dart';
+//import 'package:pushpals/widgets/profile_widget.dart';
+//import 'package:pushpals/widgets/ios/login_widget_ios.dart';
+//import 'package:pushpals/screens/profile_setup_widget.dart';
+//import 'package:pushpals/widgets/ios/profile_image_ios.dart';
+//import 'package:pushpals/widgets/profile_widget.dart';
+//import 'package:pushpals/widgets/ios/save_button_ios.dart';
+import 'package:pushpals/widgets/ios/custom_input_field_ios.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,25 +24,26 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const WidgetPreview(),
+      home: WidgetPreview(),
     );
   }
 }
 
 class WidgetPreview extends StatelessWidget {
-  const WidgetPreview({super.key});
+   const WidgetPreview({super.key});
 
-  // Hier wird das Widget ausgewählt
-  final Widget widgetToShow = const LoginWidget();
+  
 
   @override
   Widget build(BuildContext context) {
+    // Hier wird das Widget ausgewählt
+  final Widget widgetToShow = const CustomInputFieldIOS(hint: 'name');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Widget Preview'),
       ),
       body: Center(
-        child: widgetToShow,
+        child: widgetToShow,// SaveButton(onPressed: (){}),
       ),
     );
   }
