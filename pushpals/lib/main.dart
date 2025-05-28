@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+//import 'package:pushpals/screens/leader_board_screen.dart';
+import 'package:pushpals/screens/profile_screen.dart';
 //import 'package:pushpals/widgets/custom_input_field.dart';
 //import 'package:pushpals/widgets/login_widget.dart';
 //import 'package:pushpals/widgets/profile_widget.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/material.dart';
 //import 'package:pushpals/widgets/ios/profile_image_ios.dart';
 //import 'package:pushpals/widgets/profile_widget.dart';
 //import 'package:pushpals/widgets/ios/save_button_ios.dart';
-import 'package:pushpals/widgets/ios/custom_input_field_ios.dart';
+//import 'package:pushpals/widgets/ios/custom_input_field_ios.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +39,7 @@ class WidgetPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Hier wird das Widget ausgewählt
-  final Widget widgetToShow = const CustomInputFieldIOS(hint: 'name');
+  final Widget widgetToShow = const ProfileScreen();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Widget Preview'),
