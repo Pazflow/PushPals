@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pushpals/screens/friend_search_screen.dart';
 import 'package:pushpals/screens/leader_board_screen.dart';
 //import 'package:pushpals/screens/leader_board_screen.dart';
 import 'package:pushpals/screens/login_screen.dart';
 import 'package:pushpals/screens/profile_screen.dart';
+import 'package:pushpals/screens/profile_setup_screen.dart';
+import 'package:pushpals/widgets/friend_search_widget.dart';
+import 'package:pushpals/widgets/friend_tile_widget.dart';
 //import 'package:pushpals/screens/profile_screen.dart';
 //import 'package:pushpals/screens/leader_board_screen.dart';
 //import 'package:pushpals/screens/profile_screen.dart';
@@ -45,7 +49,7 @@ class WidgetPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Hier wird das Widget ausgewählt
-  final Widget widgetToShow = const LeaderboardScreen();
+  final Widget widgetToShow = ProfileSetupWidget();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Widget Preview'),

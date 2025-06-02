@@ -12,7 +12,8 @@ class LeaderboardScreen extends StatelessWidget {
     return AppDesign(
       title: 'Leaderborad',
       bottomWidget: BottomNavWidget(currentIndex: 0, onTap: (index){}),
-      child: Column(
+      child: SingleChildScrollView(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const StatsCard(level: 1, challenges: 2),
@@ -42,8 +43,42 @@ class LeaderboardScreen extends StatelessWidget {
             color: Color.fromARGB(255, 10, 32, 71),
             icon: Icons.military_tech,
           ),
+          const PlayerTile(
+            rank: 2,
+            name: 'Papa',
+            level: 3,
+            avatarUrl: '../assets/images/IT_Nerd.png',
+            color: Color.fromARGB(255, 10, 32, 71),
+            icon: Icons.military_tech,
+          ),
+          const PlayerTile(
+            rank: 2,
+            name: 'Papa',
+            level: 3,
+            avatarUrl: '../assets/images/IT_Nerd.png',
+            color: Color.fromARGB(255, 10, 32, 71),
+            icon: Icons.military_tech,
+          ),
+          const PlayerTile(
+            rank: 2,
+            name: 'Papa',
+            level: 3,
+            avatarUrl: '../assets/images/IT_Nerd.png',
+            color: Color.fromARGB(255, 10, 32, 71),
+            icon: Icons.military_tech,
+          ),
+          const PlayerTile(
+            rank: 2,
+            name: 'Papa',
+            level: 3,
+            avatarUrl: '../assets/images/IT_Nerd.png',
+            color: Color.fromARGB(255, 10, 32, 71),
+            icon: Icons.military_tech,
+          ),
         ],
       ),
+      )
+      
       
     );
     

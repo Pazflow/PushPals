@@ -11,7 +11,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppDesign(
       title: 'Profile Screen',
-      child: Column(
+      child: SingleChildScrollView(
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const AvatarCard(
@@ -25,6 +26,8 @@ class ProfileScreen extends StatelessWidget {
           const SettingsCard(),
         ],
       ),
+      )
+      
     );
   }
 }
