@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/app_avatar_widget.dart';
-import 'package:pushpals/widgets/app_design_widget.dart';
-import 'package:pushpals/widgets/custom_input_field_widget.dart';
+import 'package:pushpals/widgets/bild_avatar_widget.dart';
+import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/eingabe_feld_widget.dart';
 import 'package:pushpals/widgets/save_button_widget.dart';
 
 class ProfileSetupWidget extends StatelessWidget {
@@ -11,6 +11,8 @@ class ProfileSetupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppDesign(
       title: 'Profil Setup',
+      showBack: false,
+      showProfile: false,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -5,6 +5,9 @@ class AppDesign extends StatelessWidget {
   final Widget child;
   final bool showBack;
   final Widget? bottomWidget;
+  final bool showProfile;
+  final VoidCallback? onProfileTap;
+  final Widget? floatingActionButton;
 
   const AppDesign({
     super.key,
@@ -12,6 +15,9 @@ class AppDesign extends StatelessWidget {
     required this.child,
     this.showBack = true,
     this.bottomWidget,
+    this.showProfile = true,
+    this.onProfileTap,
+    this.floatingActionButton,
   });
 
   @override
@@ -32,12 +38,23 @@ class AppDesign extends StatelessWidget {
               )
             : null,
         centerTitle: false,
+        actions: showProfile
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.account_circle, color: Colors.white),
+                  onPressed: onProfileTap,
+                )
+              ]
+            : null,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: child,
       ),
       bottomNavigationBar: bottomWidget,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      
     );
   }
 }

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/app_design_widget.dart';
-import 'package:pushpals/widgets/button_widget.dart';
-import 'package:pushpals/widgets/custom_input_field_widget.dart';
+import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/button_allg_widget.dart';
+import 'package:pushpals/widgets/eingabe_feld_widget.dart';
 
-class LoginWidget extends StatelessWidget {
-  const LoginWidget({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppDesign(
       title: null,
       showBack: false,
+      showProfile: false,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,

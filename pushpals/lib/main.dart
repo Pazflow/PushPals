@@ -1,25 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/screens/friend_search_screen.dart';
-import 'package:pushpals/screens/leader_board_screen.dart';
-//import 'package:pushpals/screens/leader_board_screen.dart';
-import 'package:pushpals/screens/login_screen.dart';
-import 'package:pushpals/screens/profile_screen.dart';
-import 'package:pushpals/screens/profile_setup_screen.dart';
-import 'package:pushpals/widgets/friend_search_widget.dart';
-import 'package:pushpals/widgets/friend_tile_widget.dart';
-//import 'package:pushpals/screens/profile_screen.dart';
-//import 'package:pushpals/screens/leader_board_screen.dart';
-//import 'package:pushpals/screens/profile_screen.dart';
-//import 'package:pushpals/screens/profile_setup_screen.dart';
-//import 'package:pushpals/widgets/custom_input_field.dart';
-//import 'package:pushpals/widgets/login_widget.dart';
-//import 'package:pushpals/widgets/profile_widget.dart';
-//import 'package:pushpals/widgets/ios/login_widget_ios.dart';
-//import 'package:pushpals/screens/profile_setup_widget.dart';
-//import 'package:pushpals/widgets/ios/profile_image_ios.dart';
-//import 'package:pushpals/widgets/profile_widget.dart';
-//import 'package:pushpals/widgets/ios/save_button_ios.dart';
-//import 'package:pushpals/widgets/ios/custom_input_field_ios.dart';
+import 'package:pushpals/screens/start_login_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -49,7 +30,7 @@ class WidgetPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Hier wird das Widget ausgewählt
-  final Widget widgetToShow = ProfileSetupWidget();
+  final Widget widgetToShow = LoginScreen();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Widget Preview'),

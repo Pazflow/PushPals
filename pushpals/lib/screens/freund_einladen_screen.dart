@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/app_design_widget.dart';
-import 'package:pushpals/widgets/bottom_nav_widget.dart';
-import 'package:pushpals/widgets/friend_search_widget.dart';
-import 'package:pushpals/widgets/friend_tile_widget.dart';
+import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/bottom_navbar_widget.dart';
+import 'package:pushpals/widgets/freunde_einladen_card_widget.dart';
+import 'package:pushpals/widgets/freund_card_widget.dart';
 
 class FriendSearchScreen extends StatelessWidget {
   const FriendSearchScreen({super.key});

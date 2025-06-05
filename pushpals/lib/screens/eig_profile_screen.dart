@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/app_design_widget.dart';
-import 'package:pushpals/widgets/custom_card_widget.dart';
-import 'package:pushpals/widgets/setting_card_widget.dart';
-import 'package:pushpals/widgets/stats_card_widget.dart';
+import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/eigenes_profil_card_widget.dart';
+import 'package:pushpals/widgets/einstellungen_card_widget.dart';
+import 'package:pushpals/widgets/statistik_card_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
