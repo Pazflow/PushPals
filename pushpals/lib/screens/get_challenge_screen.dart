@@ -3,7 +3,6 @@ import 'package:pushpals/widgets/aktiv_card_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/challenge_aktiv_card_widget.dart';
 import 'package:pushpals/widgets/beweis_card_widget.dart';
-import 'package:pushpals/widgets/bottom_navbar_widget.dart';
 import 'package:pushpals/widgets/status_card_widget.dart';
 import 'package:pushpals/widgets/floatingbutton_widget.dart';
 
@@ -16,8 +15,9 @@ class GetChallengeScreen extends StatelessWidget {
       showBack: true,
       showProfile: true,
       title: 'Challenge Details',
+      selectedIndex: 0,
       floatingActionButton: FloatingButtonWidget(onPressed: (){}, icon: Icons.add),
-      bottomWidget: BottomNavWidget(currentIndex: 0, onTap: (index) {}),
+      
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

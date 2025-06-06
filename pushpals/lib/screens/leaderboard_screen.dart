@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/bottom_navbar_widget.dart';
 import 'package:pushpals/widgets/rangliste_spieler_card_widget.dart';
 import 'package:pushpals/widgets/statistik_card_widget.dart';
 
@@ -12,18 +11,8 @@ class LeaderboardScreen extends StatelessWidget {
     return AppDesign(
       showProfile: true,
       title: 'Leaderborad',
-      bottomWidget: BottomNavWidget(currentIndex: 0, onTap: (index) {}),
-      floatingActionButton: SizedBox(
-        height: 48,
-        width: 48,
-        child: FloatingActionButton(
-          onPressed: () {},
-          shape: CircleBorder(),
-          child: Icon(Icons.add, size: 48, ),
-          
-        ),
-      ),
-
+      selectedIndex: 0,
+      
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

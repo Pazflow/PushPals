@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/bottom_navbar_widget.dart';
 import 'package:pushpals/widgets/challange_card_widget.dart';
 import 'package:pushpals/widgets/challenge_status.dart';
 
@@ -13,7 +12,8 @@ class HomeScreen extends StatelessWidget {
       showBack: false,
       showProfile: true,
       title: 'PushPals',
-      bottomWidget: BottomNavWidget(currentIndex: 0, onTap: (index) {}),
+      selectedIndex: 0,
+      
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

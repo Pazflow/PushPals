@@ -1,60 +1,101 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AppDesign extends StatelessWidget {
   final String? title;
   final Widget child;
   final bool showBack;
-  final Widget? bottomWidget;
   final bool showProfile;
-  final VoidCallback? onProfileTap;
   final Widget? floatingActionButton;
+  final int selectedIndex;
+  final bool showBottomNav;
 
   const AppDesign({
     super.key,
     this.title,
     required this.child,
     this.showBack = true,
-    this.bottomWidget,
     this.showProfile = true,
-    this.onProfileTap,
     this.floatingActionButton,
+    this.selectedIndex = 0,
+    this.showBottomNav = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF212121),
+      backgroundColor: const Color.fromARGB(255, 33, 33, 33),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF212121),
+        backgroundColor: const Color.fromARGB(255, 142, 138, 138),
         elevation: 0,
-        leading: showBack ? const BackButton(color: Colors.white) : null,
-        title: title != null
-            ? Text(
-                title!,
-                style: const TextStyle(
+        leading:
+            showBack
+                ? BackButton(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            : null,
-        centerTitle: false,
-        actions: showProfile
-            ? [
-                IconButton(
-                  icon: const Icon(Icons.account_circle, color: Colors.white),
-                  onPressed: onProfileTap,
+                  onPressed: () => context.go('/home')
+
                 )
-              ]
-            : null,
+                : null,
+        title:
+            title != null
+                ? Text(
+                  title!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+                : null,
+        centerTitle: false,
+        actions:
+            showProfile
+                ? [
+                  IconButton(
+                    icon: const Icon(Icons.account_circle, color: Colors.white),
+                    onPressed: () {
+                      context.go('/profil'); // << ZENTRAL definiert
+                    },
+                  ),
+                ]
+                : null,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: child,
-      ),
-      bottomNavigationBar: bottomWidget,
-      floatingActionButton: floatingActionButton,
+      body: Padding(padding: const EdgeInsets.all(24), child: child),
+      floatingActionButton:
+          floatingActionButton ??
+          FloatingActionButton(
+            onPressed: () => context.go('/challenge_hinzufuegen'), // << ZENTRAL
+            child: const Icon(Icons.add),
+          ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      
+      bottomNavigationBar:
+          showBottomNav
+              ? BottomNavigationBar(
+                currentIndex: selectedIndex,
+                onTap: (index) {
+                  switch (index) {
+                    case 0:
+                      context.go('/home'); // << ZENTRAL
+                      break;
+                    case 1:
+                      context.go('/leaderboard'); // << ZENTRAL
+                      break;
+                  }
+                },
+                backgroundColor: Colors.black,
+                selectedItemColor: Colors.purple,
+                unselectedItemColor: Colors.white,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.leaderboard),
+                    label: 'Leaderboard',
+                  ),
+                ],
+              )
+              : null,
     );
   }
 }

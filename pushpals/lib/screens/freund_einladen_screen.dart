@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/bottom_navbar_widget.dart';
 import 'package:pushpals/widgets/freunde_einladen_card_widget.dart';
 import 'package:pushpals/widgets/freund_card_widget.dart';
 
@@ -11,7 +10,8 @@ class FriendSearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppDesign(
       title: 'Freund einladen',
-      bottomWidget: BottomNavWidget(currentIndex: 0, onTap: (index) {}),
+      selectedIndex: 0,
+      
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

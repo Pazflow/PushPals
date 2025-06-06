@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/bottom_navbar_widget.dart';
 import 'package:pushpals/widgets/dropdown_card_widget.dart';
 import 'package:pushpals/widgets/dropdown_switch_card_widget.dart';
-import 'package:pushpals/widgets/floatingbutton_widget.dart';
 
 class AddChallengeScreen extends StatelessWidget {
   const AddChallengeScreen({super.key});
@@ -12,11 +10,8 @@ class AddChallengeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppDesign(
       title: 'Challenge erstellen',
-      floatingActionButton: FloatingButtonWidget(
-        onPressed: () {},
-        icon: Icons.add,
-      ),
-      bottomWidget: BottomNavWidget(currentIndex: 0, onTap: (index) {}),
+      selectedIndex: 0,
+      
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
@@ -36,11 +37,15 @@ class LoginScreen extends StatelessWidget {
           SizedBox(height: 16),
           const CustomInputField(hint: 'Passwort'),
           SizedBox(height: 25),
-          ButtonWidget(onPressed: () {}, label: 'Registrieren'),
+          ButtonWidget(onPressed: () {
+            context.go('/after_registrierung');
+          }, label: 'Registrieren'),
           SizedBox(height: 16),
           ButtonWidget(
             //das allgemeine ButtonWidget ist frei zu formen, Standard ist sowie Registrieren, nur das Label ist immer anzugeben
-            onPressed: () {},
+            onPressed: () {
+              context.go('/home');
+            },
             label: 'Login',
             backgroundColor: Colors.amber,
             foregroundColor: Colors.black,
