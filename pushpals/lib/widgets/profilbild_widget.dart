@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ProfileImage extends StatelessWidget {
   const ProfileImage({super.key});
 
@@ -12,11 +11,7 @@ class ProfileImage extends StatelessWidget {
       child: CircleAvatar(
         radius: 44,
         backgroundColor: Colors.blue,
-        child: const Icon(
-          Icons.account_circle,
-          color: Colors.white,
-          size: 40,
-        ),
+        child: const Icon(Icons.account_circle, color: Colors.white, size: 40),
       ),
     );
   }

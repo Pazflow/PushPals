@@ -17,7 +17,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
-  refreshListenable: GoRouterRefreshStream(Supabase.instance.client.auth.onAuthStateChange),
+  refreshListenable: GoRouterRefreshStream(
+    Supabase.instance.client.auth.onAuthStateChange,
+  ),
   redirect: (context, state) {
     final session = Supabase.instance.client.auth.currentSession;
     final loggedIn = session != null;
@@ -29,14 +31,8 @@ final GoRouter appRouter = GoRouter(
     return null;
   },
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomeScreen(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
+    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
     GoRoute(
       path: '/after_registrierung',
       builder: (context, state) => const ProfileSetupWidget(),

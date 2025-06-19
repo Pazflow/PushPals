@@ -19,9 +19,7 @@ class BottomNavWidget extends StatelessWidget {
       notchMargin: 15,
       color: const Color(0xFF2196F3),
       child: PreferredSize(
-        preferredSize: const Size.fromHeight(
-          44,
-        ), 
+        preferredSize: const Size.fromHeight(44),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -31,7 +29,7 @@ class BottomNavWidget extends StatelessWidget {
               index: 0,
               isSelected: currentIndex == 0,
             ),
-            const SizedBox(width: 48), 
+            const SizedBox(width: 48),
             _buildNavItem(
               icon: Icons.group,
               label: 'Profil',

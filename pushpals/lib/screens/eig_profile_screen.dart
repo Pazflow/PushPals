@@ -14,21 +14,20 @@ class ProfileScreen extends StatelessWidget {
       selectedIndex: 1,
       child: SingleChildScrollView(
         child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const AvatarCard(
-            name: 'Mobile',
-            birthdate: '2025-02-18',
-            avatarPath: '../assets/images/IT_Nerd.png',
-          ),
-          const SizedBox(height: 16),
-          const StatsCard(level: 2, challenges: 4),
-          const SizedBox(height: 16),
-          const SettingsCard(),
-        ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AvatarCard(
+              name: 'Mobile',
+              birthdate: '2025-02-18',
+              avatarPath: '../assets/images/IT_Nerd.png',
+            ),
+            const SizedBox(height: 16),
+            const StatsCard(level: 2, challenges: 4),
+            const SizedBox(height: 16),
+            const SettingsCard(),
+          ],
+        ),
       ),
-      )
-      
     );
   }
 }

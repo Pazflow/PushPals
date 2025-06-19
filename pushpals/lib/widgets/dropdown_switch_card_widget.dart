@@ -79,7 +79,7 @@ class DropdownSwitchCardWidget extends StatelessWidget {
                 Switch(
                   value: false,
                   onChanged: null,
-                  activeColor: Color(0xFF0084FF), 
+                  activeColor: Color(0xFF0084FF),
                   activeTrackColor: Color(0xFFB2F2BB),
                   inactiveThumbColor: Color(0xFFFFFFFF),
                   inactiveTrackColor: Color(0xFF3B0202),

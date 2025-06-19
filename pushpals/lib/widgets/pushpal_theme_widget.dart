@@ -11,7 +11,10 @@ final ThemeData pushPalTheme = ThemeData(
   textTheme: GoogleFonts.michromaTextTheme().copyWith(
     bodyMedium: GoogleFonts.michroma(color: Colors.white),
     bodySmall: GoogleFonts.michroma(color: Colors.white70),
-    titleLarge: GoogleFonts.michroma(color: Colors.white, fontWeight: FontWeight.bold),
+    titleLarge: GoogleFonts.michroma(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+    ),
   ),
   colorScheme: ColorScheme.fromSwatch().copyWith(
     primary: const Color(0xFF2196F3),

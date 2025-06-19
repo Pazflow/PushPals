@@ -24,10 +24,7 @@ class AktivCardWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(imagePath),
-              radius: 24,
-            ),
+            CircleAvatar(backgroundImage: AssetImage(imagePath), radius: 24),
             const SizedBox(width: 12),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,10 +41,7 @@ class AktivCardWidget extends StatelessWidget {
                 ),
                 Text(
                   subtitle,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 14),
                 ),
               ],
             ),

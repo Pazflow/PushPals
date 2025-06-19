@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum ChallengeStatus {
-  pending,
-  accepted,
-  completed,
-  failed,
-}
+enum ChallengeStatus { pending, accepted, completed, failed }
 
 class StatusDisplayWidget extends StatelessWidget {
   final String label;
@@ -57,10 +52,7 @@ class StatusDisplayWidget extends StatelessWidget {
           children: [
             Text(
               label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
             Text(
               getStatusText(status),

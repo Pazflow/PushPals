@@ -54,13 +54,18 @@ class DropdownCardWidget extends StatelessWidget {
                 dropdownHint,
                 style: const TextStyle(color: Colors.white70),
               ),
-              items: items
-                  .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child:
-                            Text(item, style: const TextStyle(color: Colors.white)),
-                      ))
-                  .toList(),
+              items:
+                  items
+                      .map(
+                        (item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      )
+                      .toList(),
               onChanged: (_) {}, // nur Layout
             ),
           ],

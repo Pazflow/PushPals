@@ -5,7 +5,6 @@ import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -58,10 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return AppDesign(
@@ -94,12 +94,13 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 32),
           CustomInputField(hint: 'E-mail', controller: emailController),
           const SizedBox(height: 16),
-          CustomInputField(hint: 'Passwort', controller: passwordController, obscureText: true),
-          const SizedBox(height: 25),
-          ButtonWidget(
-            onPressed: register,
-            label: 'Registrieren',
+          CustomInputField(
+            hint: 'Passwort',
+            controller: passwordController,
+            obscureText: true,
           ),
+          const SizedBox(height: 25),
+          ButtonWidget(onPressed: register, label: 'Registrieren'),
           const SizedBox(height: 16),
           ButtonWidget(
             onPressed: login,
@@ -115,4 +116,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
