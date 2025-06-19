@@ -43,8 +43,8 @@ class SettingsCard extends StatelessWidget {
               ],
             ),
             const Divider(color: Colors.white24, height: 32),
-            _buildSettingsRow(Icons.fitness_center, 'Übungseinstellungen'),
-            _buildSettingsRow(Icons.emoji_events, 'Alle Achievements'),
+            //_buildSettingsRow(Icons.fitness_center, 'Übungseinstellungen'),
+            //_buildSettingsRow(Icons.emoji_events, 'Alle Achievements'),
             const Divider(color: Colors.white24, height: 32),
             TextButton.icon(
               onPressed: () {},
@@ -70,7 +70,7 @@ class SettingsCard extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsRow(IconData icon, String label) {
+  /*Widget _buildSettingsRow(IconData icon, String label) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: Icon(icon, color: Colors.blue),
@@ -83,4 +83,5 @@ class SettingsCard extends StatelessWidget {
       onTap: () {},
     );
   }
+  */
 }

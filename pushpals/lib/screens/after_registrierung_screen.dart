@@ -4,14 +4,50 @@ import 'package:pushpals/widgets/bild_avatar_widget.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
+import 'package:pushpals/model.dart'; // <- hinzufügen
 
-class ProfileSetupWidget extends StatelessWidget {
+class ProfileSetupWidget extends StatefulWidget {
   const ProfileSetupWidget({super.key});
+
+  @override
+  State<ProfileSetupWidget> createState() => _ProfileSetupWidgetState();
+}
+
+class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
+  final ProfileSetupModel model = ProfileSetupModel();
+  final nameController = TextEditingController();
+  final birthdayController = TextEditingController();
+
+  DateTime? selectedDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+        birthdayController.text =
+            "${picked.day}.${picked.month}.${picked.year}";
+        model.setBirthday(picked);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    birthdayController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppDesign(
-      title: 'Profil Setup',
+      title: 'Profile Setup',
       showBack: false,
       showProfile: false,
       child: Column(
@@ -19,19 +55,40 @@ class ProfileSetupWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 16),
-          const AppAvatar(
-            outerRadius: 70,
-            innerRadius: 65,
-            icon: Icons.add_a_photo,
+          GestureDetector(
+            onTap: () async {
+              await model.pickImage();
+              setState(() {}); // Bild aktualisieren
+            },
+            child: AppAvatar(
+              outerRadius: 70,
+              innerRadius: 65,
+              icon: Icons.add_a_photo,
+              imageFile:
+                  model
+                      .profileImageFile, // <- Muss im Avatar Widget unterstützt werden
+            ),
           ),
           const SizedBox(height: 32),
-          const CustomInputField(hint: 'Name'),
+          CustomInputField(
+            hint: 'Name',
+            controller: nameController,
+            onChanged: model.setUsername,
+          ),
           const SizedBox(height: 16),
-          const CustomInputField(hint: 'Birthday'),
+          CustomInputField(
+            hint: 'Birthday',
+            controller: birthdayController,
+            readOnly: true,
+            onTap: () => _selectDate(context),
+          ),
           const SizedBox(height: 32),
           ButtonWidget(
-            onPressed: () {
-              GoRouter.of(context).go('/home');
+            onPressed: () async {
+              await model.saveUserData();
+              if (context.mounted) {
+                GoRouter.of(context).go('/home');
+              }
             },
             label: 'Registrierung',
           ),
