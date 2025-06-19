@@ -10,8 +10,8 @@ class LeaderboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppDesign(
       showProfile: true,
-      title: 'Leaderborad',
-      selectedIndex: 0,
+      title: 'Leaderboard',
+      selectedIndex: 1,
       
       child: SingleChildScrollView(
         child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pushpals/router/go_router_refresh_stream.dart';
 
 // Importiere deine Screens
 import '../screens/start_login_screen.dart';
@@ -12,8 +13,21 @@ import '../screens/add_challenge_screen.dart';
 import '../screens/sended_challenge_screen.dart';
 import '../screens/leaderboard_screen.dart';
 
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/', // Startscreen
+  initialLocation: '/',
+  refreshListenable: GoRouterRefreshStream(Supabase.instance.client.auth.onAuthStateChange),
+  redirect: (context, state) {
+    final session = Supabase.instance.client.auth.currentSession;
+    final loggedIn = session != null;
+    final loggingIn = state.uri.toString() == '/';
+
+    if (!loggedIn && !loggingIn) return '/';
+    if (loggedIn && loggingIn) return '/home';
+
+    return null;
+  },
   routes: [
     GoRoute(
       path: '/',

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pushpals/widgets/bild_avatar_widget.dart';
+import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
-import 'package:pushpals/widgets/save_button_widget.dart';
 
 class ProfileSetupWidget extends StatelessWidget {
   const ProfileSetupWidget({super.key});
@@ -29,9 +29,12 @@ class ProfileSetupWidget extends StatelessWidget {
           const SizedBox(height: 16),
           const CustomInputField(hint: 'Birthday'),
           const SizedBox(height: 32),
-          SaveButton(onPressed: () {
-            GoRouter.of(context).go('/home');
-          }),
+          ButtonWidget(
+            onPressed: () {
+              GoRouter.of(context).go('/home');
+            },
+            label: 'Registrierung',
+          ),
         ],
       ),
     );

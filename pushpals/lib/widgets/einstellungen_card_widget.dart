@@ -10,7 +10,7 @@ class SettingsCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFF2E2E2E),
+          color: const Color(0xFF06101F),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -35,8 +35,8 @@ class SettingsCard extends StatelessWidget {
                   child: Slider(
                     value: 0.5,
                     onChanged: (_) {},
-                    activeColor: Colors.blue,
-                    inactiveColor: Colors.white24,
+                    activeColor: const Color(0xFF0084FF),
+                    inactiveColor: const Color(0xFF3B0202),
                   ),
                 ),
                 const Icon(Icons.volume_up, color: Colors.white),

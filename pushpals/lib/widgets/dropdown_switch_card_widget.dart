@@ -19,7 +19,7 @@ class DropdownSwitchCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFF2E2E2E),
+          color: const Color(0xFF06101F),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -38,7 +38,7 @@ class DropdownSwitchCardWidget extends StatelessWidget {
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 filled: true,
-                fillColor: const Color(0xFF1E1E1E),
+                fillColor: const Color(0xFF06101F),
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.blue),
                   borderRadius: BorderRadius.circular(8),
@@ -48,7 +48,7 @@ class DropdownSwitchCardWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              dropdownColor: const Color(0xFF1E1E1E),
+              dropdownColor: const Color(0xFF06101F),
               iconEnabledColor: Colors.white,
               hint: Text(
                 dropdownHint,
@@ -79,7 +79,7 @@ class DropdownSwitchCardWidget extends StatelessWidget {
                 Switch(
                   value: false,
                   onChanged: null,
-                  activeColor: Color(0xFF20AE14), 
+                  activeColor: Color(0xFF0084FF), 
                   activeTrackColor: Color(0xFFB2F2BB),
                   inactiveThumbColor: Color(0xFFFFFFFF),
                   inactiveTrackColor: Color(0xFF3B0202),

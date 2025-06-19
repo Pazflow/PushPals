@@ -23,7 +23,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFF2E2E2E),
+          color: const Color(0xFF06101F),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -43,7 +43,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
               height: 120,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xFF424242),
+                color: const Color(0xFF06101F),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: imagePath.isEmpty

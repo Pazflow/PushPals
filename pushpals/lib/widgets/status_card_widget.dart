@@ -49,7 +49,7 @@ class StatusDisplayWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: const Color(0xFF2E2E2E),
+          color: const Color(0xFF06101F),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(

@@ -19,7 +19,7 @@ class DropdownCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFF2E2E2E),
+          color: const Color(0xFF06101F),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -38,17 +38,17 @@ class DropdownCardWidget extends StatelessWidget {
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 filled: true,
-                fillColor: const Color(0xFF1E1E1E),
+                fillColor: const Color(0xFF06101F),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blue),
+                  borderSide: const BorderSide(color: Color(0xFF0084FF)),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 border: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blue),
+                  borderSide: const BorderSide(color: Color(0xFF0084FF)),
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              dropdownColor: const Color(0xFF1E1E1E),
+              dropdownColor: const Color(0xFF06101F),
               iconEnabledColor: Colors.white,
               hint: Text(
                 dropdownHint,
