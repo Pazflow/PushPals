@@ -3,6 +3,7 @@ import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/challange_card_widget.dart';
 import 'package:pushpals/widgets/challenge_status.dart';
 
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 

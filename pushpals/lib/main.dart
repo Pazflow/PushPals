@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'router/app_router.dart'; // unsere Router-Datei
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -31,9 +32,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: appRouter,
       title: 'PushPals',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.deepPurple,
+      theme: ThemeData( textTheme: GoogleFonts.michromaTextTheme()
+      //theme: ThemeData(
+      //  useMaterial3: true,
+      //  colorSchemeSeed: Colors.deepPurple,
       ),
     );
   }

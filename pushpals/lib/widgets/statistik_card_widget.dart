@@ -13,7 +13,7 @@ class StatsCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: const Color(0xFF2E2E2E),
+          color: const Color(0xFF06101F),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(

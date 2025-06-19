@@ -66,8 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return AppDesign(
       title: null,
+      showAppBar: false,
       showBack: false,
       showProfile: false,
+      showBottomNav: false,
+      floatingActionButton: null,
+      showFloatingButton: false,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
