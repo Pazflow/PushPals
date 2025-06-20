@@ -12,12 +12,15 @@ import '../screens/get_challenge_screen.dart';
 import '../screens/add_challenge_screen.dart';
 import '../screens/sended_challenge_screen.dart';
 import '../screens/leaderboard_screen.dart';
+import '../screens/passwort_vergessen_screen.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
-  refreshListenable: GoRouterRefreshStream(Supabase.instance.client.auth.onAuthStateChange),
+  refreshListenable: GoRouterRefreshStream(
+    Supabase.instance.client.auth.onAuthStateChange,
+  ),
   redirect: (context, state) {
     final session = Supabase.instance.client.auth.currentSession;
     final loggedIn = session != null;
@@ -29,14 +32,8 @@ final GoRouter appRouter = GoRouter(
     return null;
   },
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => const HomeScreen(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => const LoginScreen()),
+    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
     GoRoute(
       path: '/after_registrierung',
       builder: (context, state) => const ProfileSetupWidget(),
@@ -64,6 +61,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/leaderboard',
       builder: (context, state) => const LeaderboardScreen(),
+    ),
+    GoRoute(
+      path: '/passwort-vergessen',
+      builder: (context, state) => PasswortVergessenScreen(),
     ),
   ],
 );

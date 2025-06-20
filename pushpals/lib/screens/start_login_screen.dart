@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
+import 'package:pushpals/widgets/passwort_vergessen_reset_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 
@@ -95,6 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
           CustomInputField(hint: 'E-mail', controller: emailController),
           const SizedBox(height: 16),
           CustomInputField(hint: 'Passwort', controller: passwordController, obscureText: true),
+          const SizedBox(height: 10),
+          ForgotPasswordLink(emailController: emailController,),
           const SizedBox(height: 25),
           ButtonWidget(
             onPressed: register,
