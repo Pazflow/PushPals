@@ -64,9 +64,9 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
               outerRadius: 70,
               innerRadius: 65,
               icon: Icons.add_a_photo,
-              imageFile:
+              imageBytes:
                   model
-                      .profileImageFile, // <- Muss im Avatar Widget unterstützt werden
+                      .profileImageBytes, // <- Muss im Avatar Widget unterstützt werden
             ),
           ),
           const SizedBox(height: 32),

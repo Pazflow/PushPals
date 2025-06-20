@@ -1,6 +1,4 @@
-// model.dart
-
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,31 +8,27 @@ class ProfileSetupModel extends ChangeNotifier {
 
   String? username;
   DateTime? birthday;
-  File? profileImageFile;
+  Uint8List? profileImageBytes;
   String? profileImageUrl;
 
-  // Bild auswählen
+  // Bild auswählen (funktioniert auf Web & Mobile)
   Future<void> pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (picked != null) {
-      final file = File(picked.path);
-      if (await file.exists()) {
-        profileImageFile = file;
-        notifyListeners();
-      } else {
-        print("⚠️ Bilddatei existiert nicht: ${picked.path}");
-      }
+      profileImageBytes = await picked.readAsBytes();
+      notifyListeners();
     }
   }
 
-  // Bild in Supabase hochladen
+  // Bild in Supabase hochladen (für Web und Mobile)
   Future<void> uploadProfileImage(String userId) async {
-    if (profileImageFile == null) return;
+    if (profileImageBytes == null) return;
 
     final imageName = '${userId}_${DateTime.now().millisecondsSinceEpoch}.jpg';
-    final storageResponse = await _client.storage
+
+    await _client.storage
         .from('profile.images')
-        .upload(imageName, profileImageFile!);
+        .uploadBinary(imageName, profileImageBytes!);
 
     profileImageUrl = _client.storage
         .from('profile.images')
@@ -42,7 +36,7 @@ class ProfileSetupModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Speichern der Daten in public.users
+  // Daten in Supabase (public.users) speichern
   Future<void> saveUserData() async {
     final authUser = _client.auth.currentUser;
     if (authUser == null) throw Exception("User not logged in");
