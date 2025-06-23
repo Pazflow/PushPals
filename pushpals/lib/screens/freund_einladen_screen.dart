@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/freunde_einladen_card_widget.dart';
 import 'package:pushpals/widgets/freund_card_widget.dart';
+import 'package:pushpals/widgets/freunde_anfragen_dynamisch_widget.dart';
 
 class FriendSearchScreen extends StatelessWidget {
   const FriendSearchScreen({super.key});
@@ -17,6 +18,8 @@ class FriendSearchScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FriendSearchCard(),
+            SizedBox(height: 20),
+            FriendRequestListWidget(),
             SizedBox(height: 20),
             FriendTile(
               name: 'Nutzi',

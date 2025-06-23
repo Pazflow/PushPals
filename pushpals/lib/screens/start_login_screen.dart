@@ -6,7 +6,6 @@ import 'package:pushpals/widgets/eingabe_feld_widget.dart';
 import 'package:pushpals/widgets/passwort_vergessen_reset_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -29,6 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response.user != null) {
+        await Supabase.instance.client.auth.refreshSession();
+        final currentUser = Supabase.instance.client.auth.currentUser;
+        print("Eingeloggt als: ${currentUser?.email}");
         context.go('/home');
       } else {
         _showError('Login fehlgeschlagen.');
@@ -39,30 +41,43 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> register() async {
-    final email = emailController.text.trim();
-    final password = passwordController.text.trim();
+  final email = emailController.text.trim();
+  final password = passwordController.text.trim();
 
-    try {
-      final response = await Supabase.instance.client.auth.signUp(
-        email: email,
-        password: password,
-      );
+  try {
+    final response = await Supabase.instance.client.auth.signUp(
+      email: email,
+      password: password,
+    );
 
-      if (response.user != null) {
-        context.go('/after_registrierung');
-      } else {
-        _showError('Registrierung fehlgeschlagen.');
-      }
-    } catch (e) {
-      _showError(e.toString());
+    final user = response.user;
+    if (user != null) {
+      // Trage neuen User in eigene 'users'-Tabelle ein (nur ID + E-Mail!)
+      final response = await Supabase.instance.client.from('users').insert({
+  'id': user.id,
+  'email': email,
+  
+}).select();
+
+print("Insert response: $response");
+
+
+      context.go('/after_registrierung');
+    } else {
+      _showError('Registrierung fehlgeschlagen.');
     }
+  } catch (e) {
+    _showError(e.toString());
   }
+}
+
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return AppDesign(
@@ -95,14 +110,15 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 32),
           CustomInputField(hint: 'E-mail', controller: emailController),
           const SizedBox(height: 16),
-          CustomInputField(hint: 'Passwort', controller: passwordController, obscureText: true),
-          const SizedBox(height: 10),
-          ForgotPasswordLink(emailController: emailController,),
-          const SizedBox(height: 25),
-          ButtonWidget(
-            onPressed: register,
-            label: 'Registrieren',
+          CustomInputField(
+            hint: 'Passwort',
+            controller: passwordController,
+            obscureText: true,
           ),
+          const SizedBox(height: 10),
+          ForgotPasswordLink(emailController: emailController),
+          const SizedBox(height: 25),
+          ButtonWidget(onPressed: register, label: 'Registrieren'),
           const SizedBox(height: 16),
           ButtonWidget(
             onPressed: login,
@@ -118,4 +134,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

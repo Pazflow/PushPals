@@ -26,7 +26,11 @@ final GoRouter appRouter = GoRouter(
     final loggedIn = session != null;
     final loggingIn = state.uri.toString() == '/';
 
-    if (!loggedIn && !loggingIn) return '/';
+    final publicRoutes = ['/', '/passwort-vergessen'];
+
+    if (!loggedIn && !publicRoutes.contains(state.uri.toString())) {
+      return '/';
+    }
     if (loggedIn && loggingIn) return '/home';
 
     return null;
