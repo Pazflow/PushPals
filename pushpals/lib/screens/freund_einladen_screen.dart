@@ -12,7 +12,7 @@ class FriendSearchScreen extends StatelessWidget {
     return AppDesign(
       title: 'Freund einladen',
       selectedIndex: 0,
-      
+
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

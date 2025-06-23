@@ -13,7 +13,7 @@ class AddChallengeScreen extends StatelessWidget {
     return AppDesign(
       title: 'Challenge erstellen',
       selectedIndex: 0,
-      
+
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,9 +23,15 @@ class AddChallengeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const DropdownSwitchCardWidget(),
             const SizedBox(height: 20),
-            const DropdownCardWidget(title: 'Zeitlimit', dropdownHint: 'Wähle ein Zeitlimit',),
+            const DropdownCardWidget(
+              title: 'Zeitlimit',
+              dropdownHint: 'Wähle ein Zeitlimit',
+            ),
             const SizedBox(height: 20),
-            const DropdownCardWidget(title: 'Modus', dropdownHint: 'Wähle einen Modus',),
+            const DropdownCardWidget(
+              title: 'Modus',
+              dropdownHint: 'Wähle einen Modus',
+            ),
             const SizedBox(height: 20),
           ],
         ),

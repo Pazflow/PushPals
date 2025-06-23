@@ -12,7 +12,7 @@ class LeaderboardScreen extends StatelessWidget {
       showProfile: true,
       title: 'Leaderboard',
       selectedIndex: 1,
-      
+
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

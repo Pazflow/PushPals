@@ -6,7 +6,6 @@ class FriendTile extends StatelessWidget {
   final String imagePath;
   final Color? backgroundcolor;
   final VoidCallback onDelete;
-  
 
   const FriendTile({
     super.key,
@@ -30,10 +29,7 @@ class FriendTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 28,
-              backgroundImage: AssetImage(imagePath),
-            ),
+            CircleAvatar(radius: 28, backgroundImage: AssetImage(imagePath)),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -50,23 +46,19 @@ class FriendTile extends StatelessWidget {
                   ),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
                   ),
                 ],
               ),
             ),
             IconButton(
-  onPressed: onDelete,
-  icon: const Icon(Icons.delete),
-  color: Colors.white70,
-  hoverColor: Colors.red.withOpacity(0.2),
-  splashColor: Colors.red.withOpacity(0.3),
-  highlightColor: Colors.red.withOpacity(0.4),
-),
-
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete),
+              color: Colors.white70,
+              hoverColor: Colors.red.withOpacity(0.2),
+              splashColor: Colors.red.withOpacity(0.3),
+              highlightColor: Colors.red.withOpacity(0.4),
+            ),
           ],
         ),
       ),

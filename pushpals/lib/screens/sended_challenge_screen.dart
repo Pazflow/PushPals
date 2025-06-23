@@ -15,18 +15,20 @@ class SendChallengeScreen extends StatelessWidget {
       showProfile: true,
       title: 'Challenge Details',
       selectedIndex: 0,
-      floatingActionButton: FloatingButtonWidget(onPressed: (){}, icon: Icons.add),
-     
+      floatingActionButton: FloatingButtonWidget(
+        onPressed: () {},
+        icon: Icons.add,
+      ),
+
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const StatusDisplayWidget(),
-            const SizedBox(height: 15,),
+            const SizedBox(height: 15),
             const AktivCardWidget(),
-            const SizedBox(height: 15,),
+            const SizedBox(height: 15),
             const ChallengeAktivCardWidget(),
-            
           ],
         ),
       ),

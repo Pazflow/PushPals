@@ -20,9 +20,10 @@ class PlayerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ImageProvider avatarImage = avatarUrl.startsWith('http')
-        ? NetworkImage(avatarUrl)
-        : AssetImage(avatarUrl) as ImageProvider;
+    final ImageProvider avatarImage =
+        avatarUrl.startsWith('http')
+            ? NetworkImage(avatarUrl)
+            : AssetImage(avatarUrl) as ImageProvider;
 
     Widget iconWidget;
     if (icon is IconData) {
@@ -44,10 +45,7 @@ class PlayerTile extends StatelessWidget {
         children: [
           iconWidget,
           const SizedBox(width: 8),
-          CircleAvatar(
-            backgroundImage: avatarImage,
-            radius: 20,
-          ),
+          CircleAvatar(backgroundImage: avatarImage, radius: 20),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -55,10 +53,7 @@ class PlayerTile extends StatelessWidget {
               style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
-          Text(
-            'Level $level',
-            style: const TextStyle(color: Colors.white70),
-          ),
+          Text('Level $level', style: const TextStyle(color: Colors.white70)),
         ],
       ),
     );

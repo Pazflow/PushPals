@@ -85,7 +85,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
   @override
   Widget build(BuildContext context) {
     return AppDesign(
-      title: 'Profil Setup',
+      title: 'Profile Setup',
       showBack: false,
       showProfile: false,
       child: Column(
@@ -93,10 +93,19 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 16),
-          const AppAvatar(
-            outerRadius: 70,
-            innerRadius: 65,
-            icon: Icons.add_a_photo,
+          GestureDetector(
+            onTap: () async {
+              await model.pickImage();
+              setState(() {}); // Bild aktualisieren
+            },
+            child: AppAvatar(
+              outerRadius: 70,
+              innerRadius: 65,
+              icon: Icons.add_a_photo,
+              imageFile:
+                  model
+                      .profileImageFile, // <- Muss im Avatar Widget unterstützt werden
+            ),
           ),
           const SizedBox(height: 32),
           CustomInputField(hint: 'Name', controller: _nameController),

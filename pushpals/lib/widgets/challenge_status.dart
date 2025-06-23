@@ -1,7 +1,1 @@
-enum ChallengeStatus {
-  pending,
-  accepted,
-  inProgress,
-  completed,
-  failed,
-}
+enum ChallengeStatus { pending, accepted, inProgress, completed, failed }

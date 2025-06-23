@@ -4,12 +4,18 @@ class CustomInputField extends StatelessWidget {
   final String hint;
   final TextEditingController? controller;
   final bool obscureText;
+  final bool readOnly;
+  final VoidCallback? onTap;
+  final ValueChanged<String>? onChanged;
 
   const CustomInputField({
     super.key,
     required this.hint,
     this.controller,
     this.obscureText = false,
+    this.readOnly = false,
+    this.onTap,
+    this.onChanged,
   });
 
   @override
@@ -17,6 +23,9 @@ class CustomInputField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      readOnly: readOnly,
+      onTap: onTap,
+      onChanged: onChanged,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: Color(0x89FFFFFF)),

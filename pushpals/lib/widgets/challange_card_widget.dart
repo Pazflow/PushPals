@@ -85,10 +85,7 @@ class ChallengeCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     challengeText,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                   ),
                   const SizedBox(height: 4),
                   Text(

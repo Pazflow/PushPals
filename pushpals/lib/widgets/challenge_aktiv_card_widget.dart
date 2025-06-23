@@ -46,39 +46,42 @@ class ChallengeAktivCardWidget extends StatelessWidget {
                 color: const Color(0xFF06101F),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: imagePath.isEmpty
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.image_not_supported,
-                            color: Colors.white54, size: 40),
-                        const SizedBox(height: 8),
-                        Text(
-                          fallbackText,
-                          style: const TextStyle(
-                              color: Colors.white60, fontSize: 14),
+              child:
+                  imagePath.isEmpty
+                      ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.image_not_supported,
+                            color: Colors.white54,
+                            size: 40,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            fallbackText,
+                            style: const TextStyle(
+                              color: Colors.white60,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      )
+                      : ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.asset(
+                          imagePath,
+                          fit: BoxFit.cover,
+                          height: 120,
+                          width: double.infinity,
                         ),
-                      ],
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        imagePath,
-                        fit: BoxFit.cover,
-                        height: 120,
-                        width: double.infinity,
                       ),
-                    ),
             ),
             const SizedBox(height: 16),
             Text(
               'Time Limit: $timeLimit',
               style: const TextStyle(color: Colors.white70),
             ),
-            Text(
-              'Mode: $mode',
-              style: const TextStyle(color: Colors.white70),
-            ),
+            Text('Mode: $mode', style: const TextStyle(color: Colors.white70)),
           ],
         ),
       ),

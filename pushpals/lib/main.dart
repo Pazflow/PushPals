@@ -5,10 +5,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Supabase.initialize(
-    url: 'https://xmmidvlfmcfjlvcstswm.supabase.co', 
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbWlkdmxmbWNmamx2Y3N0c3dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyMDY2MTQsImV4cCI6MjA2NDc4MjYxNH0.FGMwi7MKyzDUhECmUxSRdIPKDI1TLh6vXViGMRaJI28',                     // <- ERSETZEN
+    url: 'https://xmmidvlfmcfjlvcstswm.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbWlkdmxmbWNmamx2Y3N0c3dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyMDY2MTQsImV4cCI6MjA2NDc4MjYxNH0.FGMwi7MKyzDUhECmUxSRdIPKDI1TLh6vXViGMRaJI28', // <- ERSETZEN
   );
 
   final supabase = Supabase.instance.client;
@@ -19,7 +19,6 @@ void main() async {
   } else {
     print("🚫 Kein User eingeloggt.");
   }
-
 
   runApp(const MyApp());
 }
@@ -32,10 +31,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       routerConfig: appRouter,
       title: 'PushPals',
-      theme: ThemeData( textTheme: GoogleFonts.michromaTextTheme()
-      //theme: ThemeData(
-      //  useMaterial3: true,
-      //  colorSchemeSeed: Colors.deepPurple,
+      theme: ThemeData(
+        textTheme: GoogleFonts.michromaTextTheme(),
+        //theme: ThemeData(
+        //  useMaterial3: true,
+        //  colorSchemeSeed: Colors.deepPurple,
       ),
     );
   }
