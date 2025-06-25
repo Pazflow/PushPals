@@ -6,6 +6,7 @@ import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+
 class ProfileSetupWidget extends StatefulWidget {
   const ProfileSetupWidget({super.key});
 
@@ -95,16 +96,14 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () async {
-              await model.pickImage();
+              //await model.pickImage();
               setState(() {}); // Bild aktualisieren
             },
             child: AppAvatar(
               outerRadius: 70,
               innerRadius: 65,
               icon: Icons.add_a_photo,
-              imageFile:
-                  model
-                      .profileImageFile, // <- Muss im Avatar Widget unterstützt werden
+              // <- Muss im Avatar Widget unterstützt werden
             ),
           ),
           const SizedBox(height: 32),
