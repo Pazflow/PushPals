@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard({super.key});
@@ -47,7 +49,12 @@ class SettingsCard extends StatelessWidget {
             //_buildSettingsRow(Icons.emoji_events, 'Alle Achievements'),
             const Divider(color: Colors.white24, height: 32),
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                await Supabase.instance.client.auth.signOut();
+                if (context.mounted) {
+                  context.go('/');
+                }
+              },
               icon: const Icon(Icons.logout, color: Colors.red),
               label: const Text(
                 'Ausloggen',
@@ -84,4 +91,5 @@ class SettingsCard extends StatelessWidget {
     );
   }
   */
+  }*/
 }

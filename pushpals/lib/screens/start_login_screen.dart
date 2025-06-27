@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
+import 'package:pushpals/widgets/passwort_vergessen_reset_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -27,6 +28,9 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response.user != null) {
+        await Supabase.instance.client.auth.refreshSession();
+        final currentUser = Supabase.instance.client.auth.currentUser;
+        print("Eingeloggt als: ${currentUser?.email}");
         context.go('/home');
       } else {
         _showError('Login fehlgeschlagen.');
@@ -46,7 +50,17 @@ class _LoginScreenState extends State<LoginScreen> {
         password: password,
       );
 
-      if (response.user != null) {
+      final user = response.user;
+      if (user != null) {
+        // Trage neuen User in eigene 'users'-Tabelle ein (nur ID + E-Mail!)
+        final response =
+            await Supabase.instance.client.from('users').insert({
+              'id': user.id,
+              'email': email,
+            }).select();
+
+        print("Insert response: $response");
+
         context.go('/after_registrierung');
       } else {
         _showError('Registrierung fehlgeschlagen.');
@@ -99,6 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: passwordController,
             obscureText: true,
           ),
+          const SizedBox(height: 10),
+          ForgotPasswordLink(emailController: emailController),
           const SizedBox(height: 25),
           ButtonWidget(onPressed: register, label: 'Registrieren'),
           const SizedBox(height: 16),

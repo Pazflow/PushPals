@@ -12,6 +12,7 @@ import '../screens/get_challenge_screen.dart';
 import '../screens/add_challenge_screen.dart';
 import '../screens/sended_challenge_screen.dart';
 import '../screens/leaderboard_screen.dart';
+import '../screens/passwort_vergessen_screen.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -25,7 +26,11 @@ final GoRouter appRouter = GoRouter(
     final loggedIn = session != null;
     final loggingIn = state.uri.toString() == '/';
 
-    if (!loggedIn && !loggingIn) return '/';
+    final publicRoutes = ['/', '/passwort-vergessen'];
+
+    if (!loggedIn && !publicRoutes.contains(state.uri.toString())) {
+      return '/';
+    }
     if (loggedIn && loggingIn) return '/home';
 
     return null;
@@ -60,6 +65,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/leaderboard',
       builder: (context, state) => const LeaderboardScreen(),
+    ),
+    GoRoute(
+      path: '/passwort-vergessen',
+      builder: (context, state) => PasswortVergessenScreen(),
     ),
   ],
 );

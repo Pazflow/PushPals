@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/dropdown_card_widget.dart';
 import 'package:pushpals/widgets/dropdown_switch_card_widget.dart';
@@ -16,6 +18,16 @@ class AddChallengeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const DropdownCardWidget(
+              title: 'Freund auswählen',
+              dropdownHint: 'Wähle einen Freund',
+            ),
+            ButtonWidget(
+              onPressed: () {
+                GoRouter.of(context).go('/freund_einladen');
+              },
+              label: 'Freund einladen',
+            ),
             const DropdownCardWidget(
               title: 'Freund auswählen',
               dropdownHint: 'Wähle einen Freund',

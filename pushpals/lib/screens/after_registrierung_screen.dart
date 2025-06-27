@@ -4,8 +4,10 @@ import 'package:pushpals/widgets/bild_avatar_widget.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:pushpals/model.dart'; // <- hinzufügen
 
+class ProfileSetupWidget extends StatefulWidget {
 class ProfileSetupWidget extends StatefulWidget {
   const ProfileSetupWidget({super.key});
 

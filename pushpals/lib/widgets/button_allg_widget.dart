@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed; // <- geändert
   final String label;
   final Color? backgroundColor;
   final Color? foregroundColor;
@@ -26,7 +26,7 @@ class ButtonWidget extends StatelessWidget {
       width: width ?? double.infinity,
       height: height,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: onPressed, // darf jetzt auch null sein
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor ?? const Color(0xFF2196F3),
           foregroundColor: foregroundColor ?? Colors.white,
