@@ -49,7 +49,7 @@ class ProfileSetupModel extends ChangeNotifier {
 
     await uploadProfileImage(authUser.id);
 
-    await _client.from('users').insert({
+    await _client.from('users').update({
       'id': authUser.id,
       'username': username,
       'birthday': birthday?.toIso8601String(),
