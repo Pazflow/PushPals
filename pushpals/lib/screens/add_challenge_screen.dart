@@ -18,8 +18,20 @@ class AddChallengeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ButtonWidget(onPressed: (){GoRouter.of(context).go('/freund_einladen');}, label: 'Freund einladen'),
-            const DropdownCardWidget(title: 'Freund auswählen', dropdownHint: 'Wähle einen Freund',),
+            const DropdownCardWidget(
+              title: 'Freund auswählen',
+              dropdownHint: 'Wähle einen Freund',
+            ),
+            ButtonWidget(
+              onPressed: () {
+                GoRouter.of(context).go('/freund_einladen');
+              },
+              label: 'Freund einladen',
+            ),
+            const DropdownCardWidget(
+              title: 'Freund auswählen',
+              dropdownHint: 'Wähle einen Freund',
+            ),
             const SizedBox(height: 20),
             const DropdownSwitchCardWidget(),
             const SizedBox(height: 20),

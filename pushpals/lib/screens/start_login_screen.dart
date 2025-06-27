@@ -41,36 +41,34 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> register() async {
-  final email = emailController.text.trim();
-  final password = passwordController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
-  try {
-    final response = await Supabase.instance.client.auth.signUp(
-      email: email,
-      password: password,
-    );
+    try {
+      final response = await Supabase.instance.client.auth.signUp(
+        email: email,
+        password: password,
+      );
 
-    final user = response.user;
-    if (user != null) {
-      // Trage neuen User in eigene 'users'-Tabelle ein (nur ID + E-Mail!)
-      final response = await Supabase.instance.client.from('users').insert({
-  'id': user.id,
-  'email': email,
-  
-}).select();
+      final user = response.user;
+      if (user != null) {
+        // Trage neuen User in eigene 'users'-Tabelle ein (nur ID + E-Mail!)
+        final response =
+            await Supabase.instance.client.from('users').insert({
+              'id': user.id,
+              'email': email,
+            }).select();
 
-print("Insert response: $response");
+        print("Insert response: $response");
 
-
-      context.go('/after_registrierung');
-    } else {
-      _showError('Registrierung fehlgeschlagen.');
+        context.go('/after_registrierung');
+      } else {
+        _showError('Registrierung fehlgeschlagen.');
+      }
+    } catch (e) {
+      _showError(e.toString());
     }
-  } catch (e) {
-    _showError(e.toString());
   }
-}
-
 
   void _showError(String message) {
     ScaffoldMessenger.of(

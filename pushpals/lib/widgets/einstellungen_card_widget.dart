@@ -89,5 +89,6 @@ class SettingsCard extends StatelessWidget {
       ),
       onTap: () {},
     );
-  }*/
+  }
+  */
 }

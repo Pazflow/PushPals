@@ -4,8 +4,7 @@ import 'package:pushpals/widgets/bild_avatar_widget.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/eingabe_feld_widget.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:pushpals/model.dart'; // <- hinzufügen
 
 class ProfileSetupWidget extends StatefulWidget {
   const ProfileSetupWidget({super.key});
@@ -15,72 +14,34 @@ class ProfileSetupWidget extends StatefulWidget {
 }
 
 class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _birthdayController = TextEditingController();
-  bool _isLoading = false;
+  final ProfileSetupModel model = ProfileSetupModel();
+  final nameController = TextEditingController();
+  final birthdayController = TextEditingController();
 
-  Future<void> _completeProfileSetup() async {
-    final name = _nameController.text.trim();
-    final birthdayText = _birthdayController.text.trim();
-    final user = Supabase.instance.client.auth.currentUser;
+  DateTime? selectedDate;
 
-    if (name.isEmpty || birthdayText.isEmpty || user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Bitte Name und Geburtstag ausfüllen.')),
-      );
-      return;
+  Future<void> _selectDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+        birthdayController.text =
+            "${picked.day}.${picked.month}.${picked.year}";
+        model.setBirthday(picked);
+      });
     }
+  }
 
-    DateTime? birthday;
-    try {
-      birthday = DateTime.parse(birthdayText);
-    } catch (_) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Geburtstag im Format YYYY-MM-DD eingeben.')),
-      );
-      return;
-    }
-
-    setState(() => _isLoading = true);
-
-    try {
-      // 👇 check ob user bereits in Tabelle ist
-      final existing = await Supabase.instance.client
-          .from('users')
-          .select('id')
-          .eq('id', user.id)
-          .maybeSingle();
-
-      if (existing == null) {
-        // 👇 falls nicht vorhanden, erst einfügen
-        await Supabase.instance.client.from('users').insert({
-          'id': user.id,
-          'email': user.email,
-          'username': name,
-          'birthday': birthday.toIso8601String(),
-        });
-      } else {
-        // 👇 falls vorhanden, aktualisieren
-        await Supabase.instance.client.from('users').update({
-          'username': name,
-          'birthday': birthday.toIso8601String(),
-        }).eq('id', user.id);
-      }
-
-      // 👇 Auth-Profil (display_name) aktualisieren
-      await Supabase.instance.client.auth.updateUser(UserAttributes(
-        data: {'display_name': name},
-      ));
-
-      if (!mounted) return;
-      GoRouter.of(context).go('/home');
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('FEHLER: ${e.toString()}')),
-      );
-    } finally {
-      setState(() => _isLoading = false);
-    }
+  @override
+  void dispose() {
+    nameController.dispose();
+    birthdayController.dispose();
+    super.dispose();
   }
 
   @override
@@ -103,17 +64,33 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
               outerRadius: 70,
               innerRadius: 65,
               icon: Icons.add_a_photo,
-              // <- Muss im Avatar Widget unterstützt werden
+              imageBytes:
+                  model
+                      .profileImageBytes, // <- Muss im Avatar Widget unterstützt werden
             ),
           ),
           const SizedBox(height: 32),
-          CustomInputField(hint: 'Name', controller: _nameController),
+          CustomInputField(
+            hint: 'Name',
+            controller: nameController,
+            onChanged: model.setUsername,
+          ),
           const SizedBox(height: 16),
-          CustomInputField(hint: 'Birthday (YYYY-MM-DD)', controller: _birthdayController),
+          CustomInputField(
+            hint: 'Birthday',
+            controller: birthdayController,
+            readOnly: true,
+            onTap: () => _selectDate(context),
+          ),
           const SizedBox(height: 32),
           ButtonWidget(
-            onPressed: _isLoading ? null : _completeProfileSetup,
-            label: _isLoading ? 'Speichere...' : 'Registrierung abschließen',
+            onPressed: () async {
+              await model.saveUserData();
+              if (context.mounted) {
+                GoRouter.of(context).go('/home');
+              }
+            },
+            label: 'Registrierung',
           ),
         ],
       ),
