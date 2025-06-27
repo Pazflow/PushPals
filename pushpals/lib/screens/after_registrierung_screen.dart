@@ -8,7 +8,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:pushpals/model.dart'; // <- hinzufügen
 
 class ProfileSetupWidget extends StatefulWidget {
-class ProfileSetupWidget extends StatefulWidget {
   const ProfileSetupWidget({super.key});
 
   @override
