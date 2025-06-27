@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+//Profile Setup
 class ProfileSetupModel extends ChangeNotifier {
   final SupabaseClient _client = Supabase.instance.client;
 

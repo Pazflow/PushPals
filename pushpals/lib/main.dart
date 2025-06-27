@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'router/app_router.dart'; // unsere Router-Datei
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:pushpals/models/challenge_model.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +22,12 @@ void main() async {
     print("🚫 Kein User eingeloggt.");
   }
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ChallengeModel())],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
