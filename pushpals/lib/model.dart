@@ -43,16 +43,24 @@ class ProfileSetupModel extends ChangeNotifier {
 
     await uploadProfileImage(authUser.id);
 
-    await _client.from('users').insert({
-      'id': authUser.id,
-      'username': username,
-      'birthday': birthday?.toIso8601String(),
-      'profile_image_url': profileImageUrl,
-      'email': authUser.email,
-      'level': 1,
-      'friend_request_status': 'none',
-      'challenges_completed': 0,
-    });
+    try {
+      await _client.from('users').upsert({
+        'id': authUser.id,
+        'username': username,
+        'birthday': birthday?.toIso8601String(),
+        'profile_image_url': profileImageUrl,
+        'email': authUser.email,
+        'level': 1,
+        'friend_request_status': 'none',
+        'challenges_completed': 0,
+      });
+      print("Benutzerdaten erfolgreich gespeichert.");
+    } catch (e) {
+      print("Fehler beim Speichern der Benutzerdaten");
+    }
+    await Supabase.instance.client.auth.updateUser(
+      UserAttributes(data: {'display_name': username}),
+    );
   }
 
   void setUsername(String value) {
