@@ -42,7 +42,7 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             DropdownCardWidget(
               title: 'Freund auswählen',
               dropdownHint: 'Wähle einen Freund',
-              items: ['Max', 'Anna', 'Tom'], // TODO: dynamisch laden
+              items: ['Max', 'Anna', 'Tom'], // TODO: dynamisch laden später
               onChanged: (value) {
                 // TODO: Freund setzen
               },
