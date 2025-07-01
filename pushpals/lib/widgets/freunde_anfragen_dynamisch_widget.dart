@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FriendRequestListWidget extends StatefulWidget {
-  const FriendRequestListWidget({super.key});
+  final Future<void> Function()? onActionCompleted;
+
+  const FriendRequestListWidget({super.key, this.onActionCompleted});
 
   @override
   State<FriendRequestListWidget> createState() =>
@@ -53,15 +55,45 @@ class _FriendRequestListWidgetState extends State<FriendRequestListWidget> {
     }
   }
 
-  Future<void> _handleAction(String requestId, String action) async {
+  Future<void> _handleAction(
+    String requestId,
+    String action,
+    String senderId,
+  ) async {
+    final currentUserId = _supabase.auth.currentUser!.id;
+    final fixedRequestId = requestId.trim();
+
     try {
-      await _supabase
+      final updatedList = await _supabase
           .from('friend_requests')
           .update({'status': action})
-          .eq('id', requestId);
-      _fetchRequests();
+          .eq('id', fixedRequestId)
+          .select('*');
+
+      if (updatedList.isEmpty) {
+        debugPrint('⚠️ Keine Zeilen aktualisiert!');
+        return;
+      }
+
+      if (action == 'accepted') {
+        await _supabase.from('friends').insert([
+          {'user_id': currentUserId, 'friend_id': senderId},
+          {'user_id': senderId, 'friend_id': currentUserId},
+        ]);
+      }
+
+      setState(() {
+        _requests.removeWhere((r) => r['id'] == fixedRequestId);
+      });
+
+      // 👉 HIER: Jetzt _loadFriends aufrufen
+      if (widget.onActionCompleted != null) {
+        await widget.onActionCompleted!();
+      }
+
+      await _fetchRequests();
     } catch (e) {
-      debugPrint('Fehler beim Aktualisieren: $e');
+      debugPrint('❌ Fehler beim Annehmen/Ablehnen: $e');
     }
   }
 
@@ -84,13 +116,13 @@ class _FriendRequestListWidgetState extends State<FriendRequestListWidget> {
     return Column(
       children:
           _requests.map((req) {
-            final senderEmail = req['sender_name'] ?? 'Unbekannt';
+            final senderName = req['sender_name'] ?? 'Unbekannt';
             return Card(
               color: const Color(0xFF2E2E2E),
               margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
               child: ListTile(
                 title: Text(
-                  senderEmail,
+                  senderName,
                   style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: const Text(
@@ -102,11 +134,21 @@ class _FriendRequestListWidgetState extends State<FriendRequestListWidget> {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.check, color: Colors.green),
-                      onPressed: () => _handleAction(req['id'], 'accepted'),
+                      onPressed:
+                          () => _handleAction(
+                            req['id'],
+                            'accepted',
+                            req['sender_id'],
+                          ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close, color: Colors.red),
-                      onPressed: () => _handleAction(req['id'], 'declined'),
+                      onPressed:
+                          () => _handleAction(
+                            req['id'],
+                            'declined',
+                            req['sender_id'],
+                          ),
                     ),
                   ],
                 ),

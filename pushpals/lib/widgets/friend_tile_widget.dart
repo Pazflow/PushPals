@@ -18,6 +18,8 @@ class FriendTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final publicUrl = imagePath; // Direkt nehmen, KEIN getPublicUrl()!
+
     return IntrinsicHeight(
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
@@ -29,7 +31,14 @@ class FriendTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(radius: 28, backgroundImage: AssetImage(imagePath)),
+            CircleAvatar(
+              radius: 28,
+              backgroundImage:
+                  publicUrl.isNotEmpty ? NetworkImage(publicUrl) : null,
+              child: publicUrl.isEmpty
+                  ? Icon(Icons.person, color: Colors.white)
+                  : null,
+            ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(

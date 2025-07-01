@@ -57,7 +57,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
           const SizedBox(height: 16),
           GestureDetector(
             onTap: () async {
-              //await model.pickImage();
+              await model.pickImage();
               setState(() {}); // Bild aktualisieren
             },
             child: AppAvatar(
