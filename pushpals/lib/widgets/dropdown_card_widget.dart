@@ -4,12 +4,24 @@ class DropdownCardWidget extends StatelessWidget {
   final String title;
   final String dropdownHint;
   final List<String> items;
+  final String? selectedValue;
+  final ValueChanged<String?>? onChanged;
+  final bool isCustom;
+  final ValueChanged<String?>? onDropdownChanged;
+  final ValueChanged<String>? onCustomInputChanged;
+  final TextEditingController? customInputController;
 
   const DropdownCardWidget({
     super.key,
     this.title = 'Challenge auswählen',
     this.dropdownHint = 'Übung auswählen',
     this.items = const ['Beispiel 1', 'Beispiel 2', 'Beispiel 3'],
+    this.selectedValue,
+    this.onChanged,
+    this.isCustom = false,
+    this.onDropdownChanged,
+    this.onCustomInputChanged,
+    this.customInputController,
   });
 
   @override
