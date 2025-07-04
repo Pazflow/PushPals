@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:pushpals/router/go_router_refresh_stream.dart';
+import 'package:pushpals/screens/my_friends_screen.dart';
 
 // Importiere deine Screens
 import '../screens/start_login_screen.dart';
@@ -44,6 +45,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/profil',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/meine_freunde',
+      builder: (context, state) => const MyFriendsScreen(),
     ),
     GoRoute(
       path: '/freund_einladen',

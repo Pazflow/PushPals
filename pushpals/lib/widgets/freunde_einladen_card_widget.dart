@@ -11,6 +11,7 @@ class FriendSearchCard extends StatefulWidget {
 class _FriendSearchCardState extends State<FriendSearchCard> {
   final TextEditingController _emailController = TextEditingController();
   bool _isLoading = false;
+  List<Map<String, dynamic>> _suggestions = [];
 
   Future<void> _sendFriendRequest() async {
     final email = _emailController.text.trim();
@@ -81,7 +82,6 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
         return;
       }
 
-      // 👉 Jetzt korrektes INSERT mit Name
       await Supabase.instance.client.from('friend_requests').insert({
         'sender_id': currentUserId,
         'receiver_id': receiverId,
@@ -102,6 +102,7 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
               onPressed: () {
                 Navigator.pop(context);
                 _emailController.clear();
+                setState(() => _suggestions = []);
               },
               child: const Text('OK'),
             ),
@@ -109,11 +110,32 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
         ),
       );
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Fehler: ${e.toString()}')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Fehler: ${e.toString()}')),
+      );
     } finally {
       setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _loadSuggestions(String input) async {
+    if (input.isEmpty) {
+      setState(() => _suggestions = []);
+      return;
+    }
+
+    try {
+      final data = await Supabase.instance.client
+          .from('users')
+          .select('id, email, username')
+          .ilike('email', '%$input%')
+          .limit(5);
+
+      setState(() {
+        _suggestions = data;
+      });
+    } catch (e) {
+      print('Fehler beim Laden der Vorschläge: $e');
     }
   }
 
@@ -149,11 +171,15 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
             const SizedBox(height: 12),
             TextField(
               controller: _emailController,
+              onChanged: _loadSuggestions,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.email, color: Colors.white),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.clear, color: Colors.white),
-                  onPressed: () => _emailController.clear(),
+                  onPressed: () {
+                    _emailController.clear();
+                    setState(() => _suggestions = []);
+                  },
                 ),
                 hintText: 'E-Mail eingeben',
                 hintStyle: const TextStyle(color: Colors.white60),
@@ -166,6 +192,24 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
               ),
               style: const TextStyle(color: Colors.white),
             ),
+            if (_suggestions.isNotEmpty)
+              ..._suggestions.map((user) {
+                return ListTile(
+                  title: Text(
+                    user['email'] ?? '',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  subtitle: Text(
+                    user['username'] ?? '',
+                    style: const TextStyle(color: Colors.white70),
+                  ),
+                  tileColor: const Color(0xFF424242),
+                  onTap: () {
+                    _emailController.text = user['email'] ?? '';
+                    setState(() => _suggestions = []);
+                  },
+                );
+              }).toList(),
             const SizedBox(height: 8),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.0),

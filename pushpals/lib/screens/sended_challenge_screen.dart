@@ -3,7 +3,6 @@ import 'package:pushpals/widgets/aktiv_card_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/challenge_aktiv_card_widget.dart';
 import 'package:pushpals/widgets/status_card_widget.dart';
-import 'package:pushpals/widgets/floatingbutton_widget.dart';
 
 class SendChallengeScreen extends StatelessWidget {
   const SendChallengeScreen({super.key});
@@ -13,13 +12,8 @@ class SendChallengeScreen extends StatelessWidget {
     return AppDesign(
       showBack: true,
       showProfile: true,
-      title: 'Challenge Details',
-      selectedIndex: 0,
-      floatingActionButton: FloatingButtonWidget(
-        onPressed: () {},
-        icon: Icons.add,
-      ),
-
+      title: 'zum Duell herausgefordert',
+      selectedIndex: 3,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

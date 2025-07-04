@@ -38,6 +38,12 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            ButtonWidget(
+              onPressed: () {
+                GoRouter.of(context).go('/freund_einladen');
+              },
+              label: 'Freund einladen',
+            ),
             // Freund Dropdown
             DropdownCardWidget(
               title: 'Freund auswählen',
