@@ -11,14 +11,17 @@ class FriendService {
 
     final data = await client
         .from('friends')
-        .select('id, users:friend_id(username, profile_image_url)')
+        .select(
+          'id, friend_id, users:friend_id(id, username, profile_image_url)',
+        )
         .eq('user_id', userId);
+
     print('Fetched data from Supabase: $data');
 
     return (data as List).map((item) {
       final user = item['users'];
       return Friend(
-        id: item['id'] ?? '',
+        id: item['friend_id'] ?? '',
         username: user?['username'] ?? 'Unbekannt',
         profileImageUrl: user?['profile_image_url'] ?? '',
       );

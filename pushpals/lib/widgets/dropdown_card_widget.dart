@@ -78,7 +78,8 @@ class DropdownCardWidget extends StatelessWidget {
                         ),
                       )
                       .toList(),
-              onChanged: (_) {}, // nur Layout
+              onChanged: onChanged,
+              
             ),
           ],
         ),

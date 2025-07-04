@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/dropdown_card_widget.dart';
 import 'package:pushpals/widgets/dropdown_switch_card_widget.dart';
 import 'package:pushpals/models/challenge_model.dart';
-import 'package:provider/provider.dart';
+import 'package:pushpals/services/friend_service.dart';
+import 'package:pushpals/models/friend_model.dart';
 
 class AddChallengeScreen extends StatefulWidget {
   const AddChallengeScreen({super.key});
@@ -27,6 +29,25 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
   String? selectedRepetitions;
   final List<String> repetitionOptions = ['10', '20', '50', '100'];
 
+  List<Friend> friends = [];
+  Friend? selectedFriend;
+  bool isLoadingFriends = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadFriends();
+  }
+
+  Future<void> loadFriends() async {
+    final service = FriendService();
+    final fetchedFriends = await service.fetchFriends();
+    setState(() {
+      friends = fetchedFriends;
+      isLoadingFriends = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final challengeModel = Provider.of<ChallengeModel>(context);
@@ -44,18 +65,27 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
               },
               label: 'Freund einladen',
             ),
-            // Freund Dropdown
-            DropdownCardWidget(
-              title: 'Freund auswählen',
-              dropdownHint: 'Wähle einen Freund',
-              items: ['Max', 'Anna', 'Tom'], // TODO: dynamisch laden später
-              onChanged: (value) {
-                // TODO: Freund setzen
-              },
-            ),
             const SizedBox(height: 20),
 
-            // Übung + Eigene Challenge Switch
+            isLoadingFriends
+                ? const Center(child: CircularProgressIndicator())
+                : DropdownCardWidget(
+                  title: 'Freund auswählen',
+                  dropdownHint: 'Wähle einen Freund',
+                  items: friends.map((f) => f.username).toList(),
+                  onChanged: (value) {
+                    final chosenFriend = friends.firstWhere(
+                      (f) => f.username == value,
+                    );
+                    setState(() {
+                      selectedFriend = chosenFriend;
+                    });
+                    challengeModel.setReceiverId(chosenFriend.id);
+                    print('Receiver ID gesetzt: ${chosenFriend.id}');
+                  },
+                ),
+            const SizedBox(height: 20),
+
             DropdownSwitchCardWidget(
               title: 'Übung auswählen',
               dropdownHint: 'Übung wählen',
@@ -85,7 +115,6 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Zeitlimit
             DropdownCardWidget(
               title: 'Zeitlimit auswählen',
               dropdownHint: 'Zeitlimit',
@@ -97,7 +126,6 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Wiederholungen
             DropdownCardWidget(
               title: 'Wiederholungen',
               dropdownHint: 'Anzahl auswählen',
@@ -109,16 +137,31 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             ),
             const SizedBox(height: 30),
 
-            // Absende-Button
             ButtonWidget(
               label: 'Challenge speichern',
               onPressed: () async {
-                await challengeModel.submitChallenge();
-                if (context.mounted) {
+                if (challengeModel.receiverId == null ||
+                    challengeModel.receiverId!.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Challenge gespeichert!')),
+                    const SnackBar(
+                      content: Text('Bitte wähle einen Freund aus!'),
+                    ),
                   );
-                  context.go('/home');
+                  return;
+                }
+
+                try {
+                  await challengeModel.submitChallenge();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Challenge gespeichert!')),
+                    );
+                    context.go('/home');
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                 }
               },
             ),

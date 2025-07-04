@@ -5,8 +5,7 @@ class ChallengeModel extends ChangeNotifier {
   final SupabaseClient _client = Supabase.instance.client;
 
   String? selectedExercise;
-  String? receiverId =
-      'cc05252b-b203-42f3-9776-6ccc7c4c74ab'; //später dynamisch rausziehen, hier nur hardcoded aus supabase users tabelle
+  String? receiverId;
   String? timeLimit;
   int? repetitions;
 
@@ -29,6 +28,7 @@ class ChallengeModel extends ChangeNotifier {
     repetitions = int.tryParse(value);
     notifyListeners();
   }
+  
 
   Future<void> submitChallenge() async {
     final user = _client.auth.currentUser;
