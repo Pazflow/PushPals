@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/friend_tile_widget.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:pushpals/models/friend_model.dart'; // Pfad anpassen
+import 'package:pushpals/services/friend_service.dart';
+import 'package:pushpals/models/friend_model.dart';
 import 'package:pushpals/widgets/freunde_anfragen_dynamisch_widget.dart';
 
 class MyFriendsScreen extends StatefulWidget {
@@ -25,45 +25,11 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
   }
 
   Future<void> _loadFriends() async {
-    final friends = await _fetchFriends();
+    final friends = await FriendService().fetchFriends();
     setState(() {
       _friends = friends;
       _isLoadingFriends = false;
     });
-  }
-
-  Future<List<Friend>> _fetchFriends() async {
-    final client = Supabase.instance.client;
-    final userId = client.auth.currentUser?.id;
-
-    if (userId == null) return [];
-
-    final data = await client
-        .from('friends')
-        .select('friend_id')
-        .eq('user_id', userId);
-
-    List<Friend> friends = [];
-
-    for (var entry in data) {
-      final friendId = entry['friend_id'];
-
-      final userData = await client
-          .from('users')
-          .select('username, profile_image_url')
-          .eq('id', friendId)
-          .maybeSingle();
-
-      if (userData != null) {
-        friends.add(Friend.fromMap({
-          'id': friendId,
-          'username': userData['username'],
-          'profile_image_url': userData['profile_image_url'],
-        }));
-      }
-    }
-
-    return friends;
   }
 
   @override

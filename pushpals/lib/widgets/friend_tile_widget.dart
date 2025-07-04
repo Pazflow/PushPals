@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/models/friend_model.dart'; // Pfad anpassen!
+import 'package:pushpals/models/friend_model.dart';
 
 class FriendTile extends StatelessWidget {
   final Friend friend;
@@ -13,8 +13,6 @@ class FriendTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final publicUrl = friend.profileImageUrl;
-
     return IntrinsicHeight(
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
@@ -26,26 +24,20 @@ class FriendTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 56,
-              height: 56,
-              child: ClipOval(
-                child: publicUrl.isNotEmpty
-                    ? Image.network(
-                        publicUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // ➡️ Zeige Standardbild bei Fehler
-                          return Image.asset(
-                            'assets/images/IT_Nerd.png',
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      )
-                    : Image.asset(
-                        'assets/images/IT_Nerd.png',
-                        fit: BoxFit.cover,
-                      ),
+            ClipOval(
+              child: Image.network(
+                friend.profileImageUrl,
+                width: 56,
+                height: 56,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 56,
+                    height: 56,
+                    color: Colors.grey[800],
+                    child: const Icon(Icons.person, color: Colors.white),
+                  );
+                },
               ),
             ),
             const SizedBox(width: 16),
