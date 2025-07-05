@@ -4,6 +4,7 @@ import 'router/app_router.dart'; // unsere Router-Datei
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'package:provider/provider.dart';
+import 'package:pushpals/models/profile_setup_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,11 +24,15 @@ void main() async {
   }
 
   runApp(
-    MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ChallengeModel())],
-      child: const MyApp(),
-    ),
-  );
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => ChallengeModel()),
+      ChangeNotifierProvider(create: (_) => ProfileSetupModel()), // ➕ HINZUGEFÜGT
+    ],
+    child: const MyApp(),
+  ),
+);
+
 }
 
 class MyApp extends StatelessWidget {

@@ -6,13 +6,17 @@ class ChallengeCard extends StatelessWidget {
   final String challengeText;
   final String imagePath;
   final ChallengeStatus status;
+  final VoidCallback? onAccept;
+  final VoidCallback? onDecline;
 
   const ChallengeCard({
     super.key,
-    this.titleText = 'Challenge an nutzi20',
-    this.challengeText = 'Übungstitel',
-    this.imagePath = 'assets/images/IT_Nerd.png',
-    this.status = ChallengeStatus.pending,
+    required this.titleText,
+    required this.challengeText,
+    required this.imagePath,
+    required this.status,
+    this.onAccept,
+    this.onDecline,
   });
 
   Color getStatusColor(ChallengeStatus status) {
@@ -21,12 +25,12 @@ class ChallengeCard extends StatelessWidget {
         return Colors.orange;
       case ChallengeStatus.accepted:
         return Colors.blue;
-      case ChallengeStatus.inProgress:
-        return Colors.amber;
       case ChallengeStatus.completed:
         return Colors.green;
       case ChallengeStatus.failed:
         return Colors.red;
+      default:
+        return Colors.grey;
     }
   }
 
@@ -36,12 +40,12 @@ class ChallengeCard extends StatelessWidget {
         return 'Status: Ausstehend';
       case ChallengeStatus.accepted:
         return 'Status: Angenommen';
-      case ChallengeStatus.inProgress:
-        return 'Status: In Bearbeitung';
       case ChallengeStatus.completed:
         return 'Status: Erfüllt';
       case ChallengeStatus.failed:
         return 'Status: Fehlgeschlagen';
+      default:
+        return 'Status: Unbekannt';
     }
   }
 
@@ -96,6 +100,19 @@ class ChallengeCard extends StatelessWidget {
                       fontSize: 13,
                     ),
                   ),
+                  if (status == ChallengeStatus.pending) // Nur wenn pending
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: onAccept,
+                          icon: const Icon(Icons.check, color: Colors.white),
+                        ),
+                        IconButton(
+                          onPressed: onDecline,
+                          icon: const Icon(Icons.close, color: Colors.white),
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ),

@@ -17,7 +17,7 @@ class LeaderboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const StatsCard(level: 1, challenges: 2),
+            const StatsCard(),
             const SizedBox(height: 24),
             const Text(
               'Top Spieler 🏆',
