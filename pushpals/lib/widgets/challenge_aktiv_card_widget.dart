@@ -6,14 +6,16 @@ class ChallengeAktivCardWidget extends StatelessWidget {
   final String fallbackText;
   final String timeLimit;
   final String mode;
+  final int repetitions;
 
   const ChallengeAktivCardWidget({
     super.key,
-    this.title = 'Übung',
-    this.imagePath = '../assets/images/IT_Nerd.png',
-    this.fallbackText = 'Keine Bilder verfügbar',
-    this.timeLimit = '24h',
-    this.mode = 'Standard',
+    required this.title,
+    required this.imagePath,
+    required this.fallbackText,
+    required this.timeLimit,
+    required this.mode,
+    required this.repetitions,
   });
 
   @override
@@ -79,6 +81,10 @@ class ChallengeAktivCardWidget extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Time Limit: $timeLimit',
+              style: const TextStyle(color: Colors.white70),
+            ),
+            Text(
+              'Wiederholungen: $repetitions',
               style: const TextStyle(color: Colors.white70),
             ),
             Text('Mode: $mode', style: const TextStyle(color: Colors.white70)),

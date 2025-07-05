@@ -121,7 +121,7 @@ class AppDesign extends StatelessWidget {
                       label: 'Duell',
                       index: 3,
                       isSelected: selectedIndex == 3,
-                      route: '/gesendete_challenges',
+                      route: '/send_challenges',
                     ),
                   ],
                 ),

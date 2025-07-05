@@ -10,7 +10,10 @@ class ChallengeModel extends ChangeNotifier {
   int? repetitions;
 
   List<Map<String, dynamic>> receivedChallenges = [];
-  RealtimeChannel? _subscription;
+  List<Map<String, dynamic>> sentChallenges = [];
+
+  RealtimeChannel? _receivedSubscription;
+  RealtimeChannel? _sentSubscription;
 
   void setExercise(String value) {
     selectedExercise = value;
@@ -43,7 +46,7 @@ class ChallengeModel extends ChangeNotifier {
       'exercise': selectedExercise,
       'time_limit': timeLimit,
       'repetitions': repetitions,
-      'challenge_status': 'pending', // Standard-Status
+      'challenge_status': 'pending',
     };
 
     await _client.from('challenges').insert(challengeData);
@@ -54,7 +57,6 @@ class ChallengeModel extends ChangeNotifier {
     final user = _client.auth.currentUser;
     if (user == null) throw Exception("Nicht eingeloggt");
 
-    // Einmal initial laden
     final response = await _client
         .from('challenges')
         .select('*, sender:sender_id(username, profile_image_url)')
@@ -63,13 +65,10 @@ class ChallengeModel extends ChangeNotifier {
     receivedChallenges = List<Map<String, dynamic>>.from(response);
     notifyListeners();
 
-    // Alte Subscription beenden, falls vorhanden
-    if (_subscription != null) {
-      await _client.removeChannel(_subscription!);
-    }
+    await _receivedSubscription?.unsubscribe();
+    _receivedSubscription = null;
 
-    // Neue Realtime Subscription starten
-    _subscription =
+    _receivedSubscription =
         _client
             .channel('public:challenges')
             .onPostgresChanges(
@@ -104,19 +103,78 @@ class ChallengeModel extends ChangeNotifier {
             .subscribe();
   }
 
+  Future<void> loadSentChallenges() async {
+    final user = _client.auth.currentUser;
+    if (user == null) throw Exception("Nicht eingeloggt");
+
+    final response = await _client
+        .from('challenges')
+        .select('*, receiver:receiver_id(username, profile_image_url)')
+        .eq('sender_id', user.id);
+
+    sentChallenges = List<Map<String, dynamic>>.from(response);
+    print("Alle gesendeten Challenges (Model): $sentChallenges");
+    notifyListeners();
+
+    await _sentSubscription?.unsubscribe();
+    _sentSubscription = null;
+
+    _sentSubscription =
+        _client
+            .channel('public:challenges')
+            .onPostgresChanges(
+              event: PostgresChangeEvent.insert,
+              schema: 'public',
+              table: 'challenges',
+              callback: (payload) {
+                final newChallenge = payload.newRecord;
+                if (newChallenge['sender_id'] == user.id) {
+                  sentChallenges.add(newChallenge);
+                  notifyListeners();
+                }
+              },
+            )
+            .onPostgresChanges(
+              event: PostgresChangeEvent.update,
+              schema: 'public',
+              table: 'challenges',
+              callback: (payload) {
+                final updatedChallenge = payload.newRecord;
+                if (updatedChallenge['sender_id'] == user.id) {
+                  final index = sentChallenges.indexWhere(
+                    (c) => c['id'] == updatedChallenge['id'],
+                  );
+                  if (index != -1) {
+                    sentChallenges[index] = updatedChallenge;
+                    notifyListeners();
+                  }
+                }
+              },
+            )
+            .subscribe();
+  }
+
   Future<void> updateChallengeStatus(String id, String newStatus) async {
     await _client
         .from('challenges')
         .update({'challenge_status': newStatus})
         .eq('id', id);
-    print("Status der Challenge $id auf $newStatus gesetzt");
+
+    final index = receivedChallenges.indexWhere((c) => c['id'] == id);
+    if (index != -1) {
+      receivedChallenges[index]['challenge_status'] = newStatus;
+      notifyListeners();
+    }
+
+    print(
+      "Status der Challenge $id auf $newStatus gesetzt und lokal aktualisiert",
+    );
   }
 
   @override
   void dispose() {
-    if (_subscription != null) {
-      _client.removeChannel(_subscription!);
-    }
+    _receivedSubscription?.unsubscribe();
+    _sentSubscription?.unsubscribe();
     super.dispose();
   }
 }

@@ -4,12 +4,14 @@ class AktivCardWidget extends StatelessWidget {
   final String profileName;
   final String subtitle;
   final String imagePath;
+  final bool isNetworkImage;
 
   const AktivCardWidget({
     super.key,
-    this.profileName = 'Dummy',
-    this.subtitle = 'Hat nutzi20 herausgefordert',
-    this.imagePath = 'assets/images/IT_Nerd.png',
+    required this.profileName,
+    required this.subtitle,
+    required this.imagePath,
+    this.isNetworkImage = false,
   });
 
   @override
@@ -24,26 +26,33 @@ class AktivCardWidget extends StatelessWidget {
         ),
         child: Row(
           children: [
-            CircleAvatar(backgroundImage: AssetImage(imagePath), radius: 24),
+            CircleAvatar(
+              backgroundImage: isNetworkImage
+                  ? NetworkImage(imagePath)
+                  : AssetImage(imagePath) as ImageProvider,
+              radius: 24,
+            ),
             const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  profileName,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    profileName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(color: Colors.white70, fontSize: 14),
-                ),
-              ],
+                  Text(
+                    subtitle,
+                    style: const TextStyle(color: Colors.white70, fontSize: 14),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

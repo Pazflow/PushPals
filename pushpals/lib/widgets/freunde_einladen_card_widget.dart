@@ -36,11 +36,12 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
       print('== SENDER-ID: $currentUserId');
       print('== SENDER-EMAIL: $senderEmail');
 
-      final user = await Supabase.instance.client
-          .from('users')
-          .select('id')
-          .eq('email', email)
-          .maybeSingle();
+      final user =
+          await Supabase.instance.client
+              .from('users')
+              .select('id')
+              .eq('email', email)
+              .maybeSingle();
 
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -64,15 +65,14 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
         return;
       }
 
-      final existingRequest = await Supabase.instance.client
-          .from('friend_requests')
-          .select()
-          .match({
-            'sender_id': currentUserId,
-            'receiver_id': receiverId,
-            'status': 'pending',
-          })
-          .maybeSingle();
+      final existingRequest =
+          await Supabase.instance.client.from('friend_requests').select().match(
+            {
+              'sender_id': currentUserId,
+              'receiver_id': receiverId,
+              'status': 'pending',
+            },
+          ).maybeSingle();
 
       if (existingRequest != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -92,27 +92,28 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
       if (!mounted) return;
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Einladung gesendet'),
-          content: Text(
-            'Die Einladung an $email wurde erfolgreich erstellt.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                _emailController.clear();
-                setState(() => _suggestions = []);
-              },
-              child: const Text('OK'),
+        builder:
+            (context) => AlertDialog(
+              title: const Text('Einladung gesendet'),
+              content: Text(
+                'Die Einladung an $email wurde erfolgreich erstellt.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _emailController.clear();
+                    setState(() => _suggestions = []);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
             ),
-          ],
-        ),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Fehler: ${e.toString()}')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Fehler: ${e.toString()}')));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -125,14 +126,46 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
     }
 
     try {
+      final currentUser = Supabase.instance.client.auth.currentUser;
+      if (currentUser == null) return;
+
+      final currentUserId = currentUser.id;
+
+      // Hole alle angenommenen Freundschaften
+      final acceptedFriends = await Supabase.instance.client
+          .from('friend_requests')
+          .select('receiver_id, sender_id')
+          .or('receiver_id.eq.$currentUserId,sender_id.eq.$currentUserId')
+          .eq('status', 'accepted');
+
+      final friendIds = <String>{};
+      for (final req in acceptedFriends) {
+        if (req['receiver_id'] == currentUserId) {
+          friendIds.add(req['sender_id']);
+        } else if (req['sender_id'] == currentUserId) {
+          friendIds.add(req['receiver_id']);
+        }
+      }
+
+      // Hole alle Nutzer, die auf die Suche passen
       final data = await Supabase.instance.client
           .from('users')
           .select('id, email, username')
           .ilike('email', '%$input%')
           .limit(5);
 
+      // Filtere, um keine bereits bestehenden Freunde vorzuschlagen
+      final filtered =
+          data
+              .where(
+                (user) =>
+                    user['id'] != currentUserId &&
+                    !friendIds.contains(user['id']),
+              )
+              .toList();
+
       setState(() {
-        _suggestions = data;
+        _suggestions = filtered;
       });
     } catch (e) {
       print('Fehler beim Laden der Vorschläge: $e');
@@ -224,16 +257,17 @@ class _FriendSearchCardState extends State<FriendSearchCard> {
               child: ElevatedButton.icon(
                 onPressed: _isLoading ? null : _sendFriendRequest,
                 icon: const Icon(Icons.person_add, color: Colors.white),
-                label: _isLoading
-                    ? const SizedBox(
-                        height: 16,
-                        width: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text('Freund hinzufügen'),
+                label:
+                    _isLoading
+                        ? const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                        : const Text('Freund hinzufügen'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   foregroundColor: Colors.white,

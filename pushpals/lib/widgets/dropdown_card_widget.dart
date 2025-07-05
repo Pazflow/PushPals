@@ -3,25 +3,17 @@ import 'package:flutter/material.dart';
 class DropdownCardWidget extends StatelessWidget {
   final String title;
   final String dropdownHint;
-  final List<String> items;
+  final List<Map<String, String>> items; // <-- geändert: ID & Label
   final String? selectedValue;
   final ValueChanged<String?>? onChanged;
-  final bool isCustom;
-  final ValueChanged<String?>? onDropdownChanged;
-  final ValueChanged<String>? onCustomInputChanged;
-  final TextEditingController? customInputController;
 
   const DropdownCardWidget({
     super.key,
     this.title = 'Challenge auswählen',
     this.dropdownHint = 'Übung auswählen',
-    this.items = const ['Beispiel 1', 'Beispiel 2', 'Beispiel 3'],
+    this.items = const [],
     this.selectedValue,
     this.onChanged,
-    this.isCustom = false,
-    this.onDropdownChanged,
-    this.onCustomInputChanged,
-    this.customInputController,
   });
 
   @override
@@ -48,6 +40,7 @@ class DropdownCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
+              value: selectedValue,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFF06101F),
@@ -67,19 +60,16 @@ class DropdownCardWidget extends StatelessWidget {
                 style: const TextStyle(color: Colors.white70),
               ),
               items:
-                  items
-                      .map(
-                        (item) => DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(
-                            item,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                  items.map((item) {
+                    return DropdownMenuItem<String>(
+                      value: item['id'], // <-- ID als Value
+                      child: Text(
+                        item['label'] ?? '',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }).toList(),
               onChanged: onChanged,
-              
             ),
           ],
         ),

@@ -10,7 +10,7 @@ import '../screens/eig_profile_screen.dart';
 import '../screens/freund_einladen_screen.dart';
 import '../screens/get_challenge_screen.dart';
 import '../screens/add_challenge_screen.dart';
-import '../screens/sended_challenge_screen.dart';
+import '../screens/send_challenge_screen.dart';
 import '../screens/leaderboard_screen.dart';
 import '../screens/passwort_vergessen_screen.dart';
 
@@ -63,7 +63,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const AddChallengeScreen(),
     ),
     GoRoute(
-      path: '/gesendete_challenges',
+      path: '/send_challenges',
       builder: (context, state) => const SendChallengeScreen(),
     ),
     GoRoute(

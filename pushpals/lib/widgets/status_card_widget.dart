@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-enum ChallengeStatus { pending, accepted, completed, failed }
+import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class StatusDisplayWidget extends StatelessWidget {
   final String label;
@@ -12,31 +11,6 @@ class StatusDisplayWidget extends StatelessWidget {
     this.status = ChallengeStatus.pending,
   });
 
-  Color getStatusColor(ChallengeStatus status) {
-    switch (status) {
-      case ChallengeStatus.pending:
-        return Colors.yellow;
-      case ChallengeStatus.accepted:
-        return Colors.blue;
-      case ChallengeStatus.completed:
-        return Colors.green;
-      case ChallengeStatus.failed:
-        return Colors.red;
-    }
-  }
-
-  String getStatusText(ChallengeStatus status) {
-    switch (status) {
-      case ChallengeStatus.pending:
-        return 'Ausstehend';
-      case ChallengeStatus.accepted:
-        return 'Angenommen';
-      case ChallengeStatus.completed:
-        return 'Erledigt';
-      case ChallengeStatus.failed:
-        return 'Fehlgeschlagen';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +28,10 @@ class StatusDisplayWidget extends StatelessWidget {
               label,
               style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
-            Text(
-              getStatusText(status),
+             Text(
+              status.text,
               style: TextStyle(
-                color: getStatusColor(status),
+                color: status.color,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

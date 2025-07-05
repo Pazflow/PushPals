@@ -19,8 +19,7 @@ class AddChallengeScreen extends StatefulWidget {
 class _AddChallengeScreenState extends State<AddChallengeScreen> {
   bool isCustomExercise = false;
   String? selectedExercise;
-  final TextEditingController customExerciseController =
-      TextEditingController();
+  final TextEditingController customExerciseController = TextEditingController();
   final List<String> exerciseOptions = ['Liegestütze', 'Kniebeugen', 'Sit-ups'];
 
   String? selectedTimeLimit;
@@ -42,8 +41,15 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
   Future<void> loadFriends() async {
     final service = FriendService();
     final fetchedFriends = await service.fetchFriends();
+
+    // Optional: Doppelte IDs filtern, falls jemals doppelt vorhanden
+    final uniqueFriends = <String, Friend>{};
+    for (var friend in fetchedFriends) {
+      uniqueFriends[friend.id] = friend;
+    }
+
     setState(() {
-      friends = fetchedFriends;
+      friends = uniqueFriends.values.toList();
       isLoadingFriends = false;
     });
   }
@@ -70,20 +76,26 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             isLoadingFriends
                 ? const Center(child: CircularProgressIndicator())
                 : DropdownCardWidget(
-                  title: 'Freund auswählen',
-                  dropdownHint: 'Wähle einen Freund',
-                  items: friends.map((f) => f.username).toList(),
-                  onChanged: (value) {
-                    final chosenFriend = friends.firstWhere(
-                      (f) => f.username == value,
-                    );
-                    setState(() {
-                      selectedFriend = chosenFriend;
-                    });
-                    challengeModel.setReceiverId(chosenFriend.id);
-                    print('Receiver ID gesetzt: ${chosenFriend.id}');
-                  },
-                ),
+                    title: 'Freund auswählen',
+                    dropdownHint: 'Wähle einen Freund',
+                    items: friends.map((f) {
+                      return {
+                        'id': f.id,
+                        'label': f.username,
+                      };
+                    }).toList(),
+                    selectedValue: selectedFriend?.id,
+                    onChanged: (value) {
+                      final chosenFriend = friends.firstWhere(
+                        (f) => f.id == value,
+                      );
+                      setState(() {
+                        selectedFriend = chosenFriend;
+                      });
+                      challengeModel.setReceiverId(chosenFriend.id);
+                      print('Receiver ID gesetzt: ${chosenFriend.id}');
+                    },
+                  ),
             const SizedBox(height: 20),
 
             DropdownSwitchCardWidget(
@@ -118,7 +130,10 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             DropdownCardWidget(
               title: 'Zeitlimit auswählen',
               dropdownHint: 'Zeitlimit',
-              items: timeOptions,
+              items: timeOptions.map((t) {
+                return {'id': t, 'label': t};
+              }).toList(),
+              selectedValue: selectedTimeLimit,
               onChanged: (value) {
                 selectedTimeLimit = value;
                 challengeModel.setTimeLimit(value!);
@@ -129,7 +144,10 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             DropdownCardWidget(
               title: 'Wiederholungen',
               dropdownHint: 'Anzahl auswählen',
-              items: repetitionOptions,
+              items: repetitionOptions.map((r) {
+                return {'id': r, 'label': r};
+              }).toList(),
+              selectedValue: selectedRepetitions,
               onChanged: (value) {
                 selectedRepetitions = value;
                 challengeModel.setRepetitions(value!);
@@ -159,9 +177,9 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
                     context.go('/home');
                   }
                 } catch (e) {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Fehler: $e')),
+                  );
                 }
               },
             ),

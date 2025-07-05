@@ -43,7 +43,7 @@ class ChallengeCard extends StatelessWidget {
       case ChallengeStatus.completed:
         return 'Status: Erfüllt';
       case ChallengeStatus.failed:
-        return 'Status: Fehlgeschlagen';
+        return 'Status: Abgelehnt';
       default:
         return 'Status: Unbekannt';
     }

@@ -18,13 +18,24 @@ class FriendService {
 
     print('Fetched data from Supabase: $data');
 
-    return (data as List).map((item) {
+    // Map für eindeutige Freunde
+    final Map<String, Friend> uniqueMap = {};
+
+    for (final item in data) {
       final user = item['users'];
-      return Friend(
-        id: item['friend_id'] ?? '',
-        username: user?['username'] ?? 'Unbekannt',
-        profileImageUrl: user?['profile_image_url'] ?? '',
-      );
-    }).toList();
+      final friendId = item['friend_id'];
+
+      // Wenn noch nicht enthalten, hinzufügen
+      if (!uniqueMap.containsKey(friendId)) {
+        uniqueMap[friendId] = Friend(
+          id: friendId ?? '',
+          username: user?['username'] ?? 'Unbekannt',
+          profileImageUrl: user?['profile_image_url'] ?? '',
+        );
+      }
+    }
+
+    // Werte aus Map als Liste zurückgeben
+    return uniqueMap.values.toList();
   }
 }
