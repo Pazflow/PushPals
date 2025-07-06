@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/enums/enum_challenge_status.dart';
+import 'package:pushpals/models/proof_image_model.dart';
+import 'package:pushpals/widgets/beweis_card_widget.dart';
 import 'package:pushpals/widgets/status_card_widget.dart';
 import 'package:pushpals/widgets/aktiv_card_widget.dart';
 import 'package:pushpals/widgets/challenge_aktiv_card_widget.dart';
-import 'package:pushpals/widgets/beweis_card_widget.dart';
+import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class GetChallengeScreen extends StatelessWidget {
   const GetChallengeScreen({super.key});
@@ -20,8 +21,20 @@ class GetChallengeScreen extends StatelessWidget {
       return Scaffold(body: Center(child: Text('Keine Challenge ausgewählt')));
     }
 
+    final challengeId = challenge['id'];
     final statusString = challenge['challenge_status'] ?? 'pending';
     final statusEnum = convertStatusStringToEnum(statusString);
+    final proofUrl = challenge['proof_picture_url'] ?? '';
+    print("DEBUG URL: $proofUrl");
+
+    final proofModel = ProofImageModel();
+
+    // Bild beim Screen-Start laden
+    if (proofUrl != null && proofUrl.isNotEmpty) {
+      proofModel.loadProofImageFromUrl(proofUrl);
+    } else {
+      print("ℹ️ Keine gültige URL in DB, skip loading");
+    }
 
     return AppDesign(
       showBack: true,
@@ -48,7 +61,7 @@ class GetChallengeScreen extends StatelessWidget {
               mode: 'Standard',
               repetitions: challenge['repetitions'] ?? 0,
             ),
-            BeweisCardWidget(),
+            BeweisCardWidget(challengeId: challengeId, proofModel: proofModel),
           ],
         ),
       ),

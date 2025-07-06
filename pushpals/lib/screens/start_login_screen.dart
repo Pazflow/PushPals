@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ButtonWidget(
             onPressed: login,
             label: 'Login',
-            backgroundColor: Colors.amber,
+            backgroundColor: const Color(0xFFFFC107),
             foregroundColor: Colors.black,
             width: 100,
             height: 150,

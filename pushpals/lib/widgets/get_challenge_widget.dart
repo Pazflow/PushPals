@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/beweis_card_widget.dart';
+
 import 'status_card_widget.dart';
 import 'aktiv_card_widget.dart';
 import 'challenge_aktiv_card_widget.dart';
@@ -36,7 +36,7 @@ class GetChallengeWidget extends StatelessWidget {
           mode: 'Standard',
           repetitions: challengeData['repetitions'] ?? 0,
         ),
-        BeweisCardWidget(),
+        
       ],
     );
   }
