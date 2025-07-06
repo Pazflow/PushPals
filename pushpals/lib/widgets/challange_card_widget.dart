@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/challenge_status.dart';
+
+import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class ChallengeCard extends StatelessWidget {
   final String titleText;
@@ -19,36 +20,6 @@ class ChallengeCard extends StatelessWidget {
     this.onDecline,
   });
 
-  Color getStatusColor(ChallengeStatus status) {
-    switch (status) {
-      case ChallengeStatus.pending:
-        return Colors.orange;
-      case ChallengeStatus.accepted:
-        return Colors.blue;
-      case ChallengeStatus.completed:
-        return Colors.green;
-      case ChallengeStatus.failed:
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  String getStatusText(ChallengeStatus status) {
-    switch (status) {
-      case ChallengeStatus.pending:
-        return 'Status: Ausstehend';
-      case ChallengeStatus.accepted:
-        return 'Status: Angenommen';
-      case ChallengeStatus.completed:
-        return 'Status: Erfüllt';
-      case ChallengeStatus.failed:
-        return 'Status: Abgelehnt';
-      default:
-        return 'Status: Unbekannt';
-    }
-  }
-
   ImageProvider getImageProvider(String path) {
     return path.startsWith('http')
         ? NetworkImage(path)
@@ -62,7 +33,7 @@ class ChallengeCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: getStatusColor(status),
+          color: status.color,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -93,7 +64,7 @@ class ChallengeCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    getStatusText(status),
+                    'Status: ${status.text}',
                     style: const TextStyle(
                       fontStyle: FontStyle.italic,
                       color: Colors.white70,

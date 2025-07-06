@@ -55,7 +55,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const FriendSearchScreen(),
     ),
     GoRoute(
-      path: '/challenge_uebersicht',
+      path: '/challenge_details',
       builder: (context, state) => const GetChallengeScreen(),
     ),
     GoRoute(

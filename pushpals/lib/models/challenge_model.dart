@@ -11,6 +11,8 @@ class ChallengeModel extends ChangeNotifier {
 
   List<Map<String, dynamic>> receivedChallenges = [];
   List<Map<String, dynamic>> sentChallenges = [];
+  List<Map<String, dynamic>> getChallenges = [];
+  Map<String, dynamic>? selectedChallenge;
 
   RealtimeChannel? _receivedSubscription;
   RealtimeChannel? _sentSubscription;
@@ -32,6 +34,11 @@ class ChallengeModel extends ChangeNotifier {
 
   void setRepetitions(String value) {
     repetitions = int.tryParse(value);
+    notifyListeners();
+  }
+
+  void setSelectedChallenge(Map<String, dynamic> challenge) {
+    selectedChallenge = challenge;
     notifyListeners();
   }
 
@@ -146,6 +153,57 @@ class ChallengeModel extends ChangeNotifier {
                   );
                   if (index != -1) {
                     sentChallenges[index] = updatedChallenge;
+                    notifyListeners();
+                  }
+                }
+              },
+            )
+            .subscribe();
+  }
+
+  Future<void> loadGetChallenge() async {
+    final user = _client.auth.currentUser;
+    if (user == null) throw Exception("Nicht eingeloggt");
+
+    final response = await _client
+        .from('challenges')
+        .select('*, sender:sender_id(username, profile_image_url)')
+        .eq('sender_id', user.id);
+
+    getChallenges = List<Map<String, dynamic>>.from(response);
+    print("Alle Get-Challenges (als Sender): $getChallenges");
+    notifyListeners();
+
+    await _sentSubscription?.unsubscribe();
+    _sentSubscription = null;
+
+    _sentSubscription =
+        _client
+            .channel('public:challenges')
+            .onPostgresChanges(
+              event: PostgresChangeEvent.insert,
+              schema: 'public',
+              table: 'challenges',
+              callback: (payload) {
+                final newChallenge = payload.newRecord;
+                if (newChallenge['sender_id'] == user.id) {
+                  getChallenges.add(newChallenge);
+                  notifyListeners();
+                }
+              },
+            )
+            .onPostgresChanges(
+              event: PostgresChangeEvent.update,
+              schema: 'public',
+              table: 'challenges',
+              callback: (payload) {
+                final updatedChallenge = payload.newRecord;
+                if (updatedChallenge['sender_id'] == user.id) {
+                  final index = getChallenges.indexWhere(
+                    (c) => c['id'] == updatedChallenge['id'],
+                  );
+                  if (index != -1) {
+                    getChallenges[index] = updatedChallenge;
                     notifyListeners();
                   }
                 }

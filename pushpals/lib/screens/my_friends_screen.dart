@@ -35,7 +35,7 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
   @override
   Widget build(BuildContext context) {
     return AppDesign(
-      title: 'Herausforderungen',
+      title: 'Freunde',
       selectedIndex: 2,
       child: SingleChildScrollView(
         child: Column(
