@@ -12,8 +12,8 @@ class ProfileSetupModel extends ChangeNotifier {
   Uint8List? profileImageBytes;
   String? profileImageUrl;
 
-  int level = 1;                // ➕ NEU
-  int challengesCompleted = 0;  // ➕ NEU
+  int level = 1; // ➕ NEU
+  int challengesCompleted = 0; // ➕ NEU
 
   bool isLoading = false;
 
@@ -85,7 +85,7 @@ class ProfileSetupModel extends ChangeNotifier {
         'birthday': birthday?.toIso8601String(),
         'profile_image_url': profileImageUrl,
         'email': authUser.email,
-        'level': level,                             // ➕ mitnehmen
+        'level': level, // ➕ mitnehmen
         'friend_request_status': 'none',
         'challenges_completed': challengesCompleted, // ➕ mitnehmen
       });
