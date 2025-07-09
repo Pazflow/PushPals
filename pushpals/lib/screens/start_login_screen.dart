@@ -52,20 +52,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final user = response.user;
       if (user != null) {
-        // Trage neuen User in eigene 'users'-Tabelle ein (nur ID + E-Mail!)
-        final response =
+        final insertResponse =
             await Supabase.instance.client.from('users').insert({
               'id': user.id,
               'email': email,
             }).select();
 
-        print("Insert response: $response");
+        print("Insert response: $insertResponse");
 
+        if (!mounted) return;
         context.go('/after_registrierung');
       } else {
+        if (!mounted) return;
         _showError('Registrierung fehlgeschlagen.');
       }
     } catch (e) {
+      if (!mounted) return;
       _showError(e.toString());
     }
   }
