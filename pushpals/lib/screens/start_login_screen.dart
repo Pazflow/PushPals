@@ -27,15 +27,18 @@ class _LoginScreenState extends State<LoginScreen> {
         password: password,
       );
 
+      if (!mounted) return;
+
       if (response.user != null) {
         await Supabase.instance.client.auth.refreshSession();
         final currentUser = Supabase.instance.client.auth.currentUser;
-        print("Eingeloggt als: ${currentUser?.email}");
+        print("Eingeloggt als: \\${currentUser?.email}");
         context.go('/home');
       } else {
         _showError('Login fehlgeschlagen.');
       }
     } catch (e) {
+      if (!mounted) return;
       _showError(e.toString());
     }
   }

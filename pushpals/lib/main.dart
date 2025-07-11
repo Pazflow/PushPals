@@ -18,21 +18,22 @@ void main() async {
   final session = supabase.auth.currentSession;
 
   if (session != null) {
-    print("✅ User eingeloggt: ${session.user?.email}");
+    print("✅ User eingeloggt: ${session.user.email}");
   } else {
     print("🚫 Kein User eingeloggt.");
   }
 
   runApp(
-  MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => ChallengeModel()),
-      ChangeNotifierProvider(create: (_) => ProfileSetupModel()), // ➕ HINZUGEFÜGT
-    ],
-    child: const MyApp(),
-  ),
-);
-
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ChallengeModel()),
+        ChangeNotifierProvider(
+          create: (_) => ProfileSetupModel(),
+        ), // ➕ HINZUGEFÜGT
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

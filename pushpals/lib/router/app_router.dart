@@ -21,18 +21,36 @@ final GoRouter appRouter = GoRouter(
   refreshListenable: GoRouterRefreshStream(
     Supabase.instance.client.auth.onAuthStateChange,
   ),
-  redirect: (context, state) {
+  redirect: (context, state) async {
     final session = Supabase.instance.client.auth.currentSession;
     final loggedIn = session != null;
     final loggingIn = state.uri.toString() == '/';
 
-    final publicRoutes = ['/', '/passwort-vergessen'];
+    final publicRoutes = ['/', '/passwort-vergessen', '/after_registrierung'];
 
     if (!loggedIn && !publicRoutes.contains(state.uri.toString())) {
       return '/';
     }
-    if (loggedIn && loggingIn) return '/home';
 
+    if (loggedIn) {
+      final userId = session.user.id;
+      final response =
+          await Supabase.instance.client
+              .from('users')
+              .select()
+              .eq('id', userId)
+              .single();
+      final username = response['username'];
+      final birthday = response['birthday'];
+      if ((username == null || username.isEmpty) ||
+          (birthday == null || birthday.isEmpty)) {
+        if (state.uri.toString() != '/after_registrierung') {
+          return '/after_registrierung';
+        }
+      } else if (loggingIn) {
+        return '/home';
+      }
+    }
     return null;
   },
   routes: [

@@ -21,6 +21,9 @@ class ChallengeCard extends StatelessWidget {
   });
 
   ImageProvider getImageProvider(String path) {
+    if (path.isEmpty) {
+      return const AssetImage('assets/images/IT_Nerd.png');
+    }
     return path.startsWith('http')
         ? NetworkImage(path)
         : AssetImage(path) as ImageProvider;

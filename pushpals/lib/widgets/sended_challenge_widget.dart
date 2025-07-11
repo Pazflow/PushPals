@@ -6,8 +6,13 @@ import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class SendenChallengeWidget extends StatelessWidget {
   final Map<String, dynamic> challengeData;
+  final String? gifUrl; // 👈 hinzugefügt
 
-  const SendenChallengeWidget({super.key, required this.challengeData});
+  const SendenChallengeWidget({
+    super.key,
+    required this.challengeData,
+    this.gifUrl, // 👈 hinzugefügt
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +27,20 @@ class SendenChallengeWidget extends StatelessWidget {
           subtitle:
               'Hat ${challengeData['receiver']['username']} herausgefordert',
           imagePath:
-              challengeData['receiver']['profile_image_url'] ??
-              'assets/images/IT_Nerd.png',
+              (challengeData['receiver']['profile_image_url'] != null &&
+                      (challengeData['receiver']['profile_image_url'] as String)
+                          .isNotEmpty)
+                  ? challengeData['receiver']['profile_image_url']
+                  : 'assets/images/IT_Nerd.png',
           isNetworkImage:
-              challengeData['receiver']['profile_image_url'] != null,
+              (challengeData['receiver']['profile_image_url'] != null &&
+                  (challengeData['receiver']['profile_image_url'] as String)
+                      .isNotEmpty),
         ),
-
         ChallengeAktivCardWidget(
           title: challengeData['exercise'] ?? 'Übung',
-          imagePath: 'assets/images/IT_Nerd.png',
+          imagePath: gifUrl ?? 'assets/images/IT_Nerd.png',
+          isNetworkImage: gifUrl != null,
           fallbackText: 'Keine Bilder verfügbar',
           timeLimit: challengeData['time_limit'] ?? 'unbegrenzt',
           mode: 'Standard',

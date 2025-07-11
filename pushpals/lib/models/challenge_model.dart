@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ChallengeModel extends ChangeNotifier {
   final SupabaseClient _client = Supabase.instance.client;
+  final Map<String, String> _gifUrls = {};
+  // Getter für die Challenge-GIF-URLs
+  Map<String, String> get gifUrls =>
+      _gifUrls; // key = challengeId, value = gifUrl
 
   String? selectedExercise;
   String? receiverId;
@@ -39,6 +45,13 @@ class ChallengeModel extends ChangeNotifier {
 
   void setSelectedChallenge(Map<String, dynamic> challenge) {
     selectedChallenge = challenge;
+
+    final id = challenge['id'].toString();
+    final exercise = challenge['exercise'] ?? '';
+    if (exercise.isNotEmpty) {
+      fetchGifForChallenge(id, exercise);
+    }
+
     notifyListeners();
   }
 
@@ -70,6 +83,16 @@ class ChallengeModel extends ChangeNotifier {
         .eq('receiver_id', user.id);
 
     receivedChallenges = List<Map<String, dynamic>>.from(response);
+
+    // ➕ GIFs laden
+    for (var challenge in receivedChallenges) {
+      final id = challenge['id'].toString();
+      final exercise = challenge['exercise'] ?? '';
+      if (exercise.isNotEmpty) {
+        await fetchGifForChallenge(id, exercise);
+      }
+    }
+
     notifyListeners();
 
     await _receivedSubscription?.unsubscribe();
@@ -120,7 +143,16 @@ class ChallengeModel extends ChangeNotifier {
         .eq('sender_id', user.id);
 
     sentChallenges = List<Map<String, dynamic>>.from(response);
-    print("Alle gesendeten Challenges (Model): $sentChallenges");
+
+    // ➕ GIFs laden
+    for (var challenge in sentChallenges) {
+      final id = challenge['id'].toString();
+      final exercise = challenge['exercise'] ?? '';
+      if (exercise.isNotEmpty) {
+        await fetchGifForChallenge(id, exercise);
+      }
+    }
+
     notifyListeners();
 
     await _sentSubscription?.unsubscribe();
@@ -171,7 +203,16 @@ class ChallengeModel extends ChangeNotifier {
         .eq('sender_id', user.id);
 
     getChallenges = List<Map<String, dynamic>>.from(response);
-    print("Alle Get-Challenges (als Sender): $getChallenges");
+
+    // ➕ GIFs laden
+    for (var challenge in getChallenges) {
+      final id = challenge['id'].toString();
+      final exercise = challenge['exercise'] ?? '';
+      if (exercise.isNotEmpty) {
+        await fetchGifForChallenge(id, exercise);
+      }
+    }
+
     notifyListeners();
 
     await _sentSubscription?.unsubscribe();
@@ -227,6 +268,27 @@ class ChallengeModel extends ChangeNotifier {
     print(
       "Status der Challenge $id auf $newStatus gesetzt und lokal aktualisiert",
     );
+  }
+
+  Future<void> fetchGifForChallenge(String challengeId, String exercise) async {
+    const apiKey =
+        'b2A0clF4Pm14uszrWwdNOjWB52N6veib'; // am besten später in .env
+    final query = Uri.encodeComponent(exercise);
+    final url =
+        'https://api.giphy.com/v1/gifs/search?api_key=$apiKey&q=$query&limit=1';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      if (json['data'] != null && json['data'].isNotEmpty) {
+        final gifUrl = json['data'][0]['images']['original']['url'];
+        _gifUrls[challengeId] = gifUrl;
+        notifyListeners();
+      }
+    } else {
+      print('❌ Giphy-API Fehler: ${response.statusCode}');
+    }
   }
 
   @override

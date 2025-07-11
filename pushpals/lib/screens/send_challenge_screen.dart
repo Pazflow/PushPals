@@ -52,7 +52,10 @@ class _SendChallengeScreenState extends State<SendChallengeScreen> {
                   model.sentChallenges.map((challenge) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: SendenChallengeWidget(challengeData: challenge),
+                      child: SendenChallengeWidget(
+                        challengeData: challenge,
+                        gifUrl: model.gifUrls[challenge['id'].toString()],
+                      ),
                     );
                   }).toList(),
             ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ChallengeAktivCardWidget extends StatelessWidget {
   final String title;
   final String imagePath;
+  final bool isNetworkImage;
   final String fallbackText;
   final String timeLimit;
   final String mode;
@@ -12,6 +13,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.imagePath,
+    this.isNetworkImage = false,
     required this.fallbackText,
     required this.timeLimit,
     required this.mode,
@@ -20,6 +22,8 @@ class ChallengeAktivCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = imagePath.isNotEmpty;
+
     return IntrinsicHeight(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -30,7 +34,6 @@ class ChallengeAktivCardWidget extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               title,
@@ -49,8 +52,25 @@ class ChallengeAktivCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child:
-                  imagePath.isEmpty
-                      ? Column(
+                  hasImage
+                      ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child:
+                            isNetworkImage
+                                ? Image.network(
+                                  imagePath,
+                                  fit: BoxFit.cover,
+                                  height: 120,
+                                  width: double.infinity,
+                                )
+                                : Image.asset(
+                                  imagePath,
+                                  fit: BoxFit.cover,
+                                  height: 120,
+                                  width: double.infinity,
+                                ),
+                      )
+                      : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(
@@ -67,15 +87,6 @@ class ChallengeAktivCardWidget extends StatelessWidget {
                             ),
                           ),
                         ],
-                      )
-                      : ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
-                          imagePath,
-                          fit: BoxFit.cover,
-                          height: 120,
-                          width: double.infinity,
-                        ),
                       ),
             ),
             const SizedBox(height: 16),

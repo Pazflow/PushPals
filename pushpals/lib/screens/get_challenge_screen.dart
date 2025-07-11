@@ -21,19 +21,19 @@ class GetChallengeScreen extends StatelessWidget {
       return Scaffold(body: Center(child: Text('Keine Challenge ausgewählt')));
     }
 
-    final challengeId = challenge['id'];
+    final challengeId = challenge['id'].toString();
     final statusString = challenge['challenge_status'] ?? 'pending';
     final statusEnum = convertStatusStringToEnum(statusString);
     final proofUrl = challenge['proof_picture_url'] ?? '';
-    print("DEBUG URL: $proofUrl");
+    final gifUrl = model.gifUrls[challengeId]; // kann null sein
+    final fallbackImage = 'assets/images/IT_Nerd.png';
+    final isNetworkImage = gifUrl != null;
+    final imagePath = gifUrl ?? fallbackImage;
 
     final proofModel = ProofImageModel();
 
-    // Bild beim Screen-Start laden
-    if (proofUrl != null && proofUrl.isNotEmpty) {
+    if (proofUrl.isNotEmpty) {
       proofModel.loadProofImageFromUrl(proofUrl);
-    } else {
-      print("ℹ️ Keine gültige URL in DB, skip loading");
     }
 
     return AppDesign(
@@ -49,13 +49,20 @@ class GetChallengeScreen extends StatelessWidget {
               profileName: challenge['exercise'] ?? 'Unbekannt',
               subtitle: 'Von ${challenge['sender']['username'] ?? 'Unbekannt'}',
               imagePath:
-                  challenge['sender']['profile_image_url'] ??
-                  'assets/images/IT_Nerd.png',
-              isNetworkImage: challenge['sender']['profile_image_url'] != null,
+                  (challenge['sender']['profile_image_url'] != null &&
+                          (challenge['sender']['profile_image_url'] as String)
+                              .isNotEmpty)
+                      ? challenge['sender']['profile_image_url']
+                      : 'assets/images/IT_Nerd.png',
+              isNetworkImage:
+                  (challenge['sender']['profile_image_url'] != null &&
+                      (challenge['sender']['profile_image_url'] as String)
+                          .isNotEmpty),
             ),
             ChallengeAktivCardWidget(
               title: challenge['exercise'] ?? 'Übung',
-              imagePath: 'assets/images/IT_Nerd.png',
+              imagePath: imagePath,
+              isNetworkImage: isNetworkImage,
               fallbackText: 'Keine Bilder verfügbar',
               timeLimit: challenge['time_limit'] ?? 'unbegrenzt',
               mode: 'Standard',

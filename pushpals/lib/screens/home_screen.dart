@@ -6,7 +6,6 @@ import 'package:pushpals/widgets/challange_card_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
 import 'package:go_router/go_router.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -56,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ).setSelectedChallenge(challenge);
 
                       context.push('/challenge_details');
-
                     },
                     child: ChallengeCard(
                       titleText:

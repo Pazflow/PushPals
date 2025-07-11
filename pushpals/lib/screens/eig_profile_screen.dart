@@ -52,8 +52,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ).format(profileModel.birthday!)
                               : 'Unbekannt',
                       avatarPath:
-                          profileModel.profileImageUrl ??
-                          '../assets/images/IT_Nerd.png',
+                          (profileModel.profileImageUrl != null &&
+                                  profileModel.profileImageUrl!.isNotEmpty)
+                              ? profileModel.profileImageUrl!
+                              : 'assets/images/IT_Nerd.png',
                       profileImageBytes: profileModel.profileImageBytes,
                       onAvatarTap: () async {
                         await profileModel.pickImage();
