@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/profile_setup_model.dart';
 
+
 class StatsCard extends StatelessWidget {
   const StatsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final profileModel = Provider.of<ProfileSetupModel>(context);
+
 
     return IntrinsicHeight(
       child: Container(

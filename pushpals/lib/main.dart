@@ -5,13 +5,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/profile_setup_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Supabase.initialize(
-    url: 'https://xmmidvlfmcfjlvcstswm.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhtbWlkdmxmbWNmamx2Y3N0c3dtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkyMDY2MTQsImV4cCI6MjA2NDc4MjYxNH0.FGMwi7MKyzDUhECmUxSRdIPKDI1TLh6vXViGMRaJI28', // <- ERSETZEN
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
   final supabase = Supabase.instance.client;

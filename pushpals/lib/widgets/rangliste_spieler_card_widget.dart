@@ -4,6 +4,7 @@ class PlayerTile extends StatelessWidget {
   final int rank;
   final String name;
   final int level;
+  final int challenge;
   final String avatarUrl;
   final Color color;
   final dynamic icon; // <- erlaubt IconData oder String
@@ -13,6 +14,7 @@ class PlayerTile extends StatelessWidget {
     required this.rank,
     required this.name,
     required this.level,
+    required this.challenge,
     required this.avatarUrl,
     required this.color,
     required this.icon,
@@ -54,6 +56,10 @@ class PlayerTile extends StatelessWidget {
             ),
           ),
           Text('Level $level', style: const TextStyle(color: Colors.white70)),
+          const SizedBox(width: 12),
+          Text(':', style: const TextStyle(color: Colors.white70)),
+          const SizedBox(width: 12),
+          Text('Duelle $challenge', style: const TextStyle(color: Colors.white70)),
         ],
       ),
     );

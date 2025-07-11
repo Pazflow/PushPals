@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
+import 'package:pushpals/models/profile_setup_model.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/widgets/challange_card_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final challengeModel = Provider.of<ChallengeModel>(context);
+    final profileModel = Provider.of<ProfileSetupModel>(context, listen: false);
 
     return AppDesign(
       showBack: false,
@@ -38,8 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
           challengeModel.receivedChallenges.isEmpty
               ? const Center(child: Text('Keine Challenges erhalten'))
               : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
                 itemCount: challengeModel.receivedChallenges.length,
                 itemBuilder: (context, index) {
                   final challenge = challengeModel.receivedChallenges[index];
@@ -48,14 +48,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   final status = convertStatusStringToEnum(statusString);
 
                   return GestureDetector(
-                    onTap: () {
-                      Provider.of<ChallengeModel>(
+                    onTap: () async {
+                      final challengeModel = Provider.of<ChallengeModel>(
                         context,
                         listen: false,
-                      ).setSelectedChallenge(challenge);
+                      );
 
+                      // Zuerst Challenge setzen
+                      challengeModel.setSelectedChallenge(challenge);
+
+                      // GIF laden (nur falls noch nicht da)
+                      if (!challengeModel.gifUrls.containsKey(
+                        challenge['id'].toString(),
+                      )) {
+                        await challengeModel.fetchGifForChallenge(
+                          challenge['id'].toString(),
+                          challenge['exercise'] ?? '',
+                        );
+                      }
+
+                      // Danach zur Detailseite navigieren
                       context.push('/challenge_details');
                     },
+
                     child: ChallengeCard(
                       titleText:
                           'Challenge von ${challenge['sender']?['username'] ?? 'Unbekannt'}',
@@ -71,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ).updateChallengeStatus(
                           challenge['id'].toString(),
                           'accepted',
+                          profileModel,
                         );
                       },
                       onDecline: () async {
@@ -80,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ).updateChallengeStatus(
                           challenge['id'].toString(),
                           'failed',
+                          profileModel,
                         );
                       },
                     ),

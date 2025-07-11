@@ -45,7 +45,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Container(
-              height: 120,
+              height: 350,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: const Color(0xFF06101F),
@@ -60,7 +60,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
                                 ? Image.network(
                                   imagePath,
                                   fit: BoxFit.cover,
-                                  height: 120,
+                                  height: 200,
                                   width: double.infinity,
                                 )
                                 : Image.asset(

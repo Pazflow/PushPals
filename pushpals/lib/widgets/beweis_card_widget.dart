@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/proof_image_model.dart';
 import 'package:pushpals/models/challenge_model.dart';
+import 'package:pushpals/models/profile_setup_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:pushpals/widgets/button_allg_widget.dart';
 import 'dart:typed_data';
-
 
 class BeweisCardWidget extends StatefulWidget {
   final String challengeId;
@@ -23,7 +23,7 @@ class BeweisCardWidget extends StatefulWidget {
 
 class _BeweisCardWidgetState extends State<BeweisCardWidget> {
   bool isProofSaved = false;
-  Uint8List? savedProofImage; // <-- lokale Kopie vom Bild
+  Uint8List? savedProofImage;
 
   @override
   void initState() {
@@ -47,12 +47,12 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
   @override
   Widget build(BuildContext context) {
     final challengeModel = Provider.of<ChallengeModel>(context, listen: false);
+    final profileModel = Provider.of<ProfileSetupModel>(context, listen: false);
 
     return ChangeNotifierProvider.value(
       value: widget.proofModel,
       child: Consumer<ProofImageModel>(
         builder: (context, proofModel, _) {
-          // Prüfen und speichern, falls Bild vorhanden und noch nicht gespeichert
           if (proofModel.proofImageBytes != null && savedProofImage == null) {
             savedProofImage = proofModel.proofImageBytes;
           }
@@ -150,7 +150,7 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
                       backgroundColor: isProofSaved ? Colors.green : const Color(0xFFFFC107),
                       foregroundColor: isProofSaved ? Colors.white : Colors.black,
                       onPressed: () async {
-                        await challengeModel.updateChallengeStatus(widget.challengeId, 'completed');
+                        await challengeModel.updateChallengeStatus(widget.challengeId, 'completed', profileModel);
                         setState(() {
                           isProofSaved = true;
                         });

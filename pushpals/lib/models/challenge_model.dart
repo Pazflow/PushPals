@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:pushpals/models/profile_setup_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChallengeModel extends ChangeNotifier {
   final SupabaseClient _client = Supabase.instance.client;
@@ -84,14 +86,13 @@ class ChallengeModel extends ChangeNotifier {
 
     receivedChallenges = List<Map<String, dynamic>>.from(response);
 
-    // ➕ GIFs laden
-    for (var challenge in receivedChallenges) {
-      final id = challenge['id'].toString();
-      final exercise = challenge['exercise'] ?? '';
-      if (exercise.isNotEmpty) {
-        await fetchGifForChallenge(id, exercise);
-      }
-    }
+    receivedChallenges.sort((a, b) {
+      final aDate = DateTime.tryParse(a['created_at'] ?? '') ?? DateTime(1970);
+      final bDate = DateTime.tryParse(b['created_at'] ?? '') ?? DateTime(1970);
+      return bDate.compareTo(aDate); // b zuerst = neueste oben
+    });
+
+    // GIFs laden entfernt, nur noch wenn man direkt auf eine karte klickt, ansonsten overkill
 
     notifyListeners();
 
@@ -143,15 +144,7 @@ class ChallengeModel extends ChangeNotifier {
         .eq('sender_id', user.id);
 
     sentChallenges = List<Map<String, dynamic>>.from(response);
-
-    // ➕ GIFs laden
-    for (var challenge in sentChallenges) {
-      final id = challenge['id'].toString();
-      final exercise = challenge['exercise'] ?? '';
-      if (exercise.isNotEmpty) {
-        await fetchGifForChallenge(id, exercise);
-      }
-    }
+    // GIFs laden entfernt, nur noch wenn man direkt auf eine karte klickt, ansonsten overkill
 
     notifyListeners();
 
@@ -203,15 +196,7 @@ class ChallengeModel extends ChangeNotifier {
         .eq('sender_id', user.id);
 
     getChallenges = List<Map<String, dynamic>>.from(response);
-
-    // ➕ GIFs laden
-    for (var challenge in getChallenges) {
-      final id = challenge['id'].toString();
-      final exercise = challenge['exercise'] ?? '';
-      if (exercise.isNotEmpty) {
-        await fetchGifForChallenge(id, exercise);
-      }
-    }
+    // GIFs laden entfernt, nur noch wenn man direkt auf eine karte klickt, ansonsten overkill
 
     notifyListeners();
 
@@ -253,11 +238,25 @@ class ChallengeModel extends ChangeNotifier {
             .subscribe();
   }
 
-  Future<void> updateChallengeStatus(String id, String newStatus) async {
+  Future<void> updateChallengeStatus(
+    String id,
+    String newStatus,
+    ProfileSetupModel profileModel,
+  ) async {
     await _client
         .from('challenges')
         .update({'challenge_status': newStatus})
         .eq('id', id);
+    if (newStatus == 'completed') {
+      profileModel.challengesCompleted += 1;
+
+      if (profileModel.challengesCompleted % 5 == 0) {
+        profileModel.level += 1;
+        print('🎉 Level up! Neues Level: ${profileModel.level}');
+      }
+      await profileModel.saveUserData();
+      profileModel.notifyListeners();
+    }
 
     final index = receivedChallenges.indexWhere((c) => c['id'] == id);
     if (index != -1) {
@@ -271,8 +270,11 @@ class ChallengeModel extends ChangeNotifier {
   }
 
   Future<void> fetchGifForChallenge(String challengeId, String exercise) async {
-    const apiKey =
-        'b2A0clF4Pm14uszrWwdNOjWB52N6veib'; // am besten später in .env
+    if (_gifUrls.containsKey(challengeId)) return;
+    final apiKey = dotenv.env['GIPHY_API_KEY'];
+    if (apiKey == null) {
+      throw Exception("GIPHY_API_KEY nicht gesetzt");
+    }
     final query = Uri.encodeComponent(exercise);
     final url =
         'https://api.giphy.com/v1/gifs/search?api_key=$apiKey&q=$query&limit=1';
@@ -293,8 +295,18 @@ class ChallengeModel extends ChangeNotifier {
 
   @override
   void dispose() {
-    _receivedSubscription?.unsubscribe();
-    _sentSubscription?.unsubscribe();
+    try {
+      _receivedSubscription?.unsubscribe();
+    } catch (e) {
+      print("⚠️ Fehler beim Unsubscribe _receivedSubscription: $e");
+    }
+
+    try {
+      _sentSubscription?.unsubscribe();
+    } catch (e) {
+      print("⚠️ Fehler beim Unsubscribe _sentSubscription: $e");
+    }
+
     super.dispose();
   }
 }

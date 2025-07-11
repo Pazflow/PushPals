@@ -19,7 +19,7 @@ extension ChallengeStatusExtension on ChallengeStatus {
   Color get color {
     switch (this) {
       case ChallengeStatus.pending:
-        return Colors.yellow;
+        return const Color.fromARGB(255, 145, 35, 197);
       case ChallengeStatus.accepted:
         return Colors.blue;
       case ChallengeStatus.completed:
