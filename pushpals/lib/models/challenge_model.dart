@@ -144,6 +144,11 @@ class ChallengeModel extends ChangeNotifier {
         .eq('sender_id', user.id);
 
     sentChallenges = List<Map<String, dynamic>>.from(response);
+    sentChallenges.sort((a, b) {
+      final aDate = DateTime.tryParse(a['created_at'] ?? '') ?? DateTime(1970);
+      final bDate = DateTime.tryParse(b['created_at'] ?? '') ?? DateTime(1970);
+      return bDate.compareTo(aDate); // b zuerst = neueste oben
+    });
     // GIFs laden entfernt, nur noch wenn man direkt auf eine karte klickt, ansonsten overkill
 
     notifyListeners();

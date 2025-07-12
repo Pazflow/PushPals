@@ -19,13 +19,25 @@ class AddChallengeScreen extends StatefulWidget {
 class _AddChallengeScreenState extends State<AddChallengeScreen> {
   bool isCustomExercise = false;
   String? selectedExercise;
-  final TextEditingController customExerciseController = TextEditingController();
-  final List<String> exerciseOptions = ['Liegestütze', 'Kniebeugen', 'Sit-ups'];
+  final TextEditingController customExerciseController =
+      TextEditingController();
+  final List<String> exerciseOptions = [
+    'Liegestütze',
+    'Kniebeugen',
+    'Sit-ups',
+    'Hampelmann',
+    'Känguru-Hüpfer',
+  ];
 
+  bool isCustomTime = false;
   String? selectedTimeLimit;
-  final List<String> timeOptions = ['24h', '7 Tage', '30 Tage'];
+  final TextEditingController customTimeController = TextEditingController();
+  final List<String> timeOptions = ['30min', '2h', '24h', '7 Tage', '30 Tage'];
 
+  bool isCustomRepetitions = false;
   String? selectedRepetitions;
+  final TextEditingController customRepetitionsController =
+      TextEditingController();
   final List<String> repetitionOptions = ['10', '20', '50', '100'];
 
   List<Friend> friends = [];
@@ -42,7 +54,6 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
     final service = FriendService();
     final fetchedFriends = await service.fetchFriends();
 
-    // Optional: Doppelte IDs filtern, falls jemals doppelt vorhanden
     final uniqueFriends = <String, Friend>{};
     for (var friend in fetchedFriends) {
       uniqueFriends[friend.id] = friend;
@@ -52,6 +63,14 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
       friends = uniqueFriends.values.toList();
       isLoadingFriends = false;
     });
+  }
+
+  @override
+  void dispose() {
+    customExerciseController.dispose();
+    customTimeController.dispose();
+    customRepetitionsController.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,26 +95,24 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
             isLoadingFriends
                 ? const Center(child: CircularProgressIndicator())
                 : DropdownCardWidget(
-                    title: 'Freund auswählen',
-                    dropdownHint: 'Wähle einen Freund',
-                    items: friends.map((f) {
-                      return {
-                        'id': f.id,
-                        'label': f.username,
-                      };
-                    }).toList(),
-                    selectedValue: selectedFriend?.id,
-                    onChanged: (value) {
-                      final chosenFriend = friends.firstWhere(
-                        (f) => f.id == value,
-                      );
-                      setState(() {
-                        selectedFriend = chosenFriend;
-                      });
-                      challengeModel.setReceiverId(chosenFriend.id);
-                      print('Receiver ID gesetzt: ${chosenFriend.id}');
-                    },
-                  ),
+                  title: 'Freund auswählen',
+                  dropdownHint: 'Wähle einen Freund',
+                  items:
+                      friends.map((f) {
+                        return {'id': f.id, 'label': f.username};
+                      }).toList(),
+                  selectedValue: selectedFriend?.id,
+                  onChanged: (value) {
+                    final chosenFriend = friends.firstWhere(
+                      (f) => f.id == value,
+                    );
+                    setState(() {
+                      selectedFriend = chosenFriend;
+                    });
+                    challengeModel.setReceiverId(chosenFriend.id);
+                    print('Receiver ID gesetzt: ${chosenFriend.id}');
+                  },
+                ),
             const SizedBox(height: 20),
 
             DropdownSwitchCardWidget(
@@ -124,34 +141,70 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
                   }
                 });
               },
+              customHint: 'Eigene Challenge festlegen',
+              switchLabel: 'Eigene Challenge definieren',
             ),
             const SizedBox(height: 20),
 
-            DropdownCardWidget(
+            DropdownSwitchCardWidget(
               title: 'Zeitlimit auswählen',
-              dropdownHint: 'Zeitlimit',
-              items: timeOptions.map((t) {
-                return {'id': t, 'label': t};
-              }).toList(),
+              dropdownHint: 'Zeitlimit wählen',
+              items: timeOptions,
               selectedValue: selectedTimeLimit,
-              onChanged: (value) {
-                selectedTimeLimit = value;
-                challengeModel.setTimeLimit(value!);
+              isCustom: isCustomTime,
+              customInputController: customTimeController,
+              onDropdownChanged: (value) {
+                setState(() {
+                  selectedTimeLimit = value;
+                  challengeModel.setTimeLimit(value!);
+                });
               },
+              onCustomInputChanged: (value) {
+                challengeModel.setTimeLimit(value);
+              },
+              onSwitchChanged: (value) {
+                setState(() {
+                  isCustomTime = value;
+                  if (value) {
+                    selectedTimeLimit = null;
+                  } else {
+                    customTimeController.clear();
+                  }
+                });
+              },
+              customHint: 'Eigenes Zeitlimit festlegen',
+              switchLabel: 'Eigenes Zeitlimit definieren',
             ),
             const SizedBox(height: 20),
 
-            DropdownCardWidget(
+            DropdownSwitchCardWidget(
               title: 'Wiederholungen',
-              dropdownHint: 'Anzahl auswählen',
-              items: repetitionOptions.map((r) {
-                return {'id': r, 'label': r};
-              }).toList(),
+              dropdownHint: 'Anzahl wählen',
+              items: repetitionOptions,
               selectedValue: selectedRepetitions,
-              onChanged: (value) {
-                selectedRepetitions = value;
-                challengeModel.setRepetitions(value!);
+              isCustom: isCustomRepetitions,
+              customInputController: customRepetitionsController,
+              onDropdownChanged: (value) {
+                setState(() {
+                  selectedRepetitions = value;
+                  challengeModel.setRepetitions(value!);
+                });
               },
+              onCustomInputChanged: (value) {
+                challengeModel.setRepetitions(value);
+              },
+              onSwitchChanged: (value) {
+                setState(() {
+                  isCustomRepetitions = value;
+                  if (value) {
+                    selectedRepetitions = null;
+                  } else {
+                    customRepetitionsController.clear();
+                  }
+                });
+              },
+              customHint: 'Eigene Anzahl der Wiederholungen',
+              switchLabel: 'Eigene Anzahl definieren',
             ),
             const SizedBox(height: 30),
 
@@ -177,9 +230,9 @@ class _AddChallengeScreenState extends State<AddChallengeScreen> {
                     context.go('/home');
                   }
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Fehler: $e')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                 }
               },
             ),

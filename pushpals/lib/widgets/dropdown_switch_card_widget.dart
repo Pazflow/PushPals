@@ -11,6 +11,8 @@ class DropdownSwitchCardWidget extends StatelessWidget {
   final ValueChanged<bool>? onSwitchChanged;
   final ValueChanged<String>? onCustomInputChanged;
   final TextEditingController? customInputController;
+  final String customHint;
+  final String switchLabel;
 
   const DropdownSwitchCardWidget({
     super.key,
@@ -23,6 +25,8 @@ class DropdownSwitchCardWidget extends StatelessWidget {
     this.onSwitchChanged,
     this.onCustomInputChanged,
     this.customInputController,
+    required this.customHint,
+    required this.switchLabel,
   });
 
   @override
@@ -86,7 +90,7 @@ class DropdownSwitchCardWidget extends StatelessWidget {
 
             if (isCustom)
               CustomInputField(
-                hint: 'Eigene Übung eingeben',
+                hint: customHint,
                 controller: customInputController,
                 onChanged: onCustomInputChanged,
               ),
@@ -96,9 +100,9 @@ class DropdownSwitchCardWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Eigene Challenge definieren',
-                  style: TextStyle(color: Colors.white70),
+                Text(
+                  switchLabel,
+                  style: const TextStyle(color: Colors.white70),
                 ),
                 Switch(
                   value: isCustom,

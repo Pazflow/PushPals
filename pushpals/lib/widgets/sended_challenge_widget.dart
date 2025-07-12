@@ -39,8 +39,6 @@ class SendenChallengeWidget extends StatelessWidget {
         ),
         ChallengeAktivCardWidget(
           title: challengeData['exercise'] ?? 'Übung',
-          imagePath: gifUrl ?? 'assets/images/IT_Nerd.png',
-          isNetworkImage: gifUrl != null,
           fallbackText: 'Keine Bilder verfügbar',
           timeLimit: challengeData['time_limit'] ?? 'unbegrenzt',
           mode: 'Standard',

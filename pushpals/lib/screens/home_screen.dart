@@ -53,6 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         listen: false,
                       );
+                      final status = challenge['challenge_status'];
+
+                      if (status != 'accepted') {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Zuerst annehmen, wenn du Details sehen willst.',
+                            ),
+                          ),
+                        );
+                        return;
+                      }
 
                       // Zuerst Challenge setzen
                       challengeModel.setSelectedChallenge(challenge);

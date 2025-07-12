@@ -30,7 +30,6 @@ class GetChallengeWidget extends StatelessWidget {
 
         ChallengeAktivCardWidget(
           title: challengeData['exercise'] ?? 'Übung',
-          imagePath: 'assets/images/IT_Nerd.png',
           fallbackText: 'Keine Bilder verfügbar',
           timeLimit: challengeData['time_limit'] ?? 'unbegrenzt',
           mode: 'Standard',

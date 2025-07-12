@@ -16,6 +16,7 @@ class GetChallengeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final model = Provider.of<ChallengeModel>(context);
     final challenge = model.selectedChallenge;
+    
 
     if (challenge == null) {
       return Scaffold(body: Center(child: Text('Keine Challenge ausgewählt')));
@@ -25,10 +26,12 @@ class GetChallengeScreen extends StatelessWidget {
     final statusString = challenge['challenge_status'] ?? 'pending';
     final statusEnum = convertStatusStringToEnum(statusString);
     final proofUrl = challenge['proof_picture_url'] ?? '';
-    final gifUrl = model.gifUrls[challengeId]; // kann null sein
-    final fallbackImage = 'assets/images/IT_Nerd.png';
-    final isNetworkImage = gifUrl != null;
-    final imagePath = gifUrl ?? fallbackImage;
+    //final gifUrl = model.gifUrls[challengeId]; // kann null sein
+    //final fallbackImage = 'assets/images/IT_Nerd.png';
+    final challengeModel = Provider.of<ChallengeModel>(context);
+    final selectedChallenge = challengeModel.selectedChallenge;
+    //final isNetworkImage = gifUrl != null;
+    //final imagePath = gifUrl ?? fallbackImage;
 
     final proofModel = ProofImageModel();
 
@@ -59,15 +62,15 @@ class GetChallengeScreen extends StatelessWidget {
                       (challenge['sender']['profile_image_url'] as String)
                           .isNotEmpty),
             ),
+
             ChallengeAktivCardWidget(
-              title: challenge['exercise'] ?? 'Übung',
-              imagePath: imagePath,
-              isNetworkImage: isNetworkImage,
-              fallbackText: 'Keine Bilder verfügbar',
-              timeLimit: challenge['time_limit'] ?? 'unbegrenzt',
-              mode: 'Standard',
-              repetitions: challenge['repetitions'] ?? 0,
+              title: selectedChallenge?['exercise'] ?? 'Übung',
+              fallbackText: 'Kein GIF vorhanden',
+              timeLimit: selectedChallenge?['time_limit'].toString() ?? '0',
+              mode: selectedChallenge?['mode'] ?? 'Standard',
+              repetitions: selectedChallenge?['repetitions'] ?? 0,
             ),
+
             BeweisCardWidget(challengeId: challengeId, proofModel: proofModel),
           ],
         ),
