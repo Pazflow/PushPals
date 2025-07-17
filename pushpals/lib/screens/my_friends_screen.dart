@@ -69,12 +69,53 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
             if (_isLoadingFriends)
               const Center(child: CircularProgressIndicator())
             else
-              ..._friends.map((friend) => FriendTile(
-                    friend: friend,
-                    onDelete: () {
-                      // TODO: Löschen implementieren
-                    },
-                  )).toList(),
+              ..._friends
+                  .map(
+                    (friend) => FriendTile(
+                      friend: friend,
+                      onDelete: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder:
+                              (context) => AlertDialog(
+                                title: const Text('Freund entfernen'),
+                                content: Text(
+                                  'Möchtest du ${friend.username} wirklich aus deiner Freundesliste entfernen?',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed:
+                                        () => Navigator.of(context).pop(false),
+                                    child: const Text('Abbrechen'),
+                                  ),
+                                  TextButton(
+                                    onPressed:
+                                        () => Navigator.of(context).pop(true),
+                                    child: const Text('Löschen'),
+                                  ),
+                                ],
+                              ),
+                        );
+
+                        if (confirm == true) {
+                          await FriendService().deleteFriend(friend.id);
+                          await _loadFriends(); // Liste aktualisieren
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '${friend.username} wurde entfernt',
+                              ),
+                              duration: const Duration(seconds: 2),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  )
+                  .toList(),
+
             const SizedBox(height: 30),
           ],
         ),

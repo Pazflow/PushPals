@@ -6,7 +6,6 @@ class FriendService {
 
   Future<List<Friend>> fetchFriends() async {
     final userId = client.auth.currentUser?.id;
-
     if (userId == null) return [];
 
     final data = await client
@@ -18,14 +17,11 @@ class FriendService {
 
     print('Fetched data from Supabase: $data');
 
-    // Map für eindeutige Freunde
     final Map<String, Friend> uniqueMap = {};
-
     for (final item in data) {
       final user = item['users'];
       final friendId = item['friend_id'];
 
-      // Wenn noch nicht enthalten, hinzufügen
       if (!uniqueMap.containsKey(friendId)) {
         uniqueMap[friendId] = Friend(
           id: friendId ?? '',
@@ -35,7 +31,23 @@ class FriendService {
       }
     }
 
-    // Werte aus Map als Liste zurückgeben
     return uniqueMap.values.toList();
+  }
+
+  Future<void> deleteFriend(String friendId) async {
+    final userId = client.auth.currentUser?.id;
+    if (userId == null) return;
+
+    // Einseitig löschen
+    await client.from('friends').delete().match({
+      'user_id': userId,
+      'friend_id': friendId,
+    });
+
+    // Optional zweiseitig löschen:
+    await client.from('friends').delete().match({
+      'user_id': friendId,
+      'friend_id': userId,
+    });
   }
 }

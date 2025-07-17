@@ -55,14 +55,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                       final status = challenge['challenge_status'];
 
-                      if (status != 'accepted') {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Zuerst annehmen, wenn du Details sehen willst.',
+                      if (status != 'accepted' && status != 'completed') {
+                        if (status == 'failed') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Details? Dazu hättest du dich trauen sollen.',
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Zuerst annehmen, wenn du Details sehen willst.',
+                              ),
+                            ),
+                          );
+                        }
                         return;
                       }
 

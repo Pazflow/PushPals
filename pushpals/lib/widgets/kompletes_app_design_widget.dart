@@ -40,7 +40,15 @@ class AppDesign extends StatelessWidget {
                     showBack
                         ? BackButton(
                           color: const Color(0xFF06101F),
-                          onPressed: () => context.go('/home'),
+                          onPressed: () {
+                            final uri =
+                                GoRouterState.of(context).uri.toString();
+                            if (uri == '/freund_einladen') {
+                              context.go('/meine_freunde');
+                            } else {
+                              context.go('/home');
+                            }
+                          },
                         )
                         : null,
                 title:

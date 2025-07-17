@@ -8,6 +8,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
   final String timeLimit;
   final String mode;
   final int repetitions;
+  
 
   const ChallengeAktivCardWidget({
     super.key,
