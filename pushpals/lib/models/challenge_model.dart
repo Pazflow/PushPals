@@ -324,7 +324,44 @@ class ChallengeModel extends ChangeNotifier {
       "Status der Challenge $id auf $newStatus gesetzt und lokal aktualisiert",
     );
   }
+  //das ist für TENOR-Gif
+  Future<void> fetchGifForChallenge(String challengeId, String exercise) async {
+  if (_gifUrls.containsKey(challengeId)) return;
 
+  final apiKey = dotenv.env['TENOR_API_KEY'];
+  if (apiKey == null) {
+    throw Exception("TENOR_API_KEY nicht gesetzt");
+  }
+
+  //final query = Uri.encodeComponent(exercise);
+  final funnyQuery = Uri.encodeComponent('funny $exercise');
+  final url =
+      'https://tenor.googleapis.com/v2/search?q=$funnyQuery&key=$apiKey&limit=1&random=false&contentfilter=medium'; //high für jugendfrei medium für jugendfrei aber humorvoll, true verschiedene bilder
+      //'https://tenor.googleapis.com/v2/search?q=$query&key=$apiKey&limit=1';
+
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    final json = jsonDecode(response.body);
+    if (json['results'] != null && json['results'].isNotEmpty) {
+      final gifUrl = json['results'][0]['media_formats']['gif']['url'];
+
+      _gifUrls[challengeId] = gifUrl;
+      notifyListeners();
+
+      await _client
+          .from('challenges')
+          .update({'gif_url': gifUrl})
+          .eq('id', challengeId);
+    }
+  } else {
+    print('❌ Tenor API Fehler: ${response.statusCode}');
+  }
+}
+
+
+
+/* das ist für die GIPHY
   Future<void> fetchGifForChallenge(String challengeId, String exercise) async {
     if (_gifUrls.containsKey(challengeId)) return;
 
@@ -374,5 +411,5 @@ class ChallengeModel extends ChangeNotifier {
     }
 
     super.dispose();
-  }
+  }*/
 }
