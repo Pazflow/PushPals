@@ -54,7 +54,8 @@ class _SendChallengeScreenState extends State<SendChallengeScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: SendenChallengeWidget(
                         challengeData: challenge,
-                        gifUrl: model.gifUrls[challenge['id'].toString()],
+                        gifUrl: model.gifUrls[(challenge['id']?.toString()) ?? ''] ?? '',
+
                       ),
                     );
                   }).toList(),

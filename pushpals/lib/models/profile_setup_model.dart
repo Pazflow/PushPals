@@ -12,7 +12,7 @@ class ProfileSetupModel extends ChangeNotifier {
   Uint8List? profileImageBytes;
   String? profileImageUrl;
 
-  int level = 1;                // ➕ NEU
+  int level = 0;                // ➕ NEU
   int challengesCompleted = 0;  // ➕ NEU
 
   bool isLoading = false;

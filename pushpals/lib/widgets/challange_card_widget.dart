@@ -9,6 +9,7 @@ class ChallengeCard extends StatelessWidget {
   final ChallengeStatus status;
   final VoidCallback? onAccept;
   final VoidCallback? onDecline;
+    final String? gifUrl;
 
   const ChallengeCard({
     super.key,
@@ -18,6 +19,7 @@ class ChallengeCard extends StatelessWidget {
     required this.status,
     this.onAccept,
     this.onDecline,
+    this.gifUrl,
   });
 
   ImageProvider getImageProvider(String path) {

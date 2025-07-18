@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:pushpals/models/challenge_model.dart';
 import 'status_card_widget.dart';
 import 'aktiv_card_widget.dart';
 import 'challenge_aktiv_card_widget.dart';
@@ -6,18 +8,24 @@ import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class SendenChallengeWidget extends StatelessWidget {
   final Map<String, dynamic> challengeData;
-  final String? gifUrl; // 👈 hinzugefügt
+  final String? gifUrl; // ✅ NEU
 
   const SendenChallengeWidget({
     super.key,
     required this.challengeData,
-    this.gifUrl, // 👈 hinzugefügt
+    this.gifUrl, // ✅ NEU
   });
+
 
   @override
   Widget build(BuildContext context) {
     final statusString = challengeData['challenge_status'] ?? 'pending';
     final ChallengeStatus statusEnum = convertStatusStringToEnum(statusString);
+
+    final challengeId = challengeData['id'].toString();
+    final gifUrl = context
+        .read<ChallengeModel>()
+        .gifUrls[challengeId]; // ✅ Hier kommt das gif für genau diese Challenge
 
     return Column(
       children: [
@@ -43,6 +51,7 @@ class SendenChallengeWidget extends StatelessWidget {
           timeLimit: challengeData['time_limit'] ?? 'unbegrenzt',
           mode: 'Standard',
           repetitions: challengeData['repetitions'] ?? 0,
+          gifUrl: gifUrl, // ✅ korrekt übergeben
         ),
       ],
     );

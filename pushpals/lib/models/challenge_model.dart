@@ -8,7 +8,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class ChallengeModel extends ChangeNotifier {
   final SupabaseClient _client = Supabase.instance.client;
   final Map<String, String> _gifUrls = {};
-  // Getter für die Challenge-GIF-URLs
   Map<String, String> get gifUrls =>
       _gifUrls; // key = challengeId, value = gifUrl
 
@@ -45,13 +44,14 @@ class ChallengeModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedChallenge(Map<String, dynamic> challenge) {
+  Future<void> setSelectedChallenge(Map<String, dynamic> challenge) async {
     selectedChallenge = challenge;
 
     final id = challenge['id'].toString();
     final exercise = challenge['exercise'] ?? '';
-    if (exercise.isNotEmpty) {
-      fetchGifForChallenge(id, exercise);
+
+    if (exercise.isNotEmpty && !_gifUrls.containsKey(id)) {
+      await fetchGifForChallenge(id, exercise);
     }
 
     notifyListeners();
@@ -81,7 +81,9 @@ class ChallengeModel extends ChangeNotifier {
 
     final response = await _client
         .from('challenges')
-        .select('*, sender:sender_id(username, profile_image_url)')
+        .select(
+          '*, sender:sender_id(username, profile_image_url), gif_url',
+        ) // 👈 wichtig
         .eq('receiver_id', user.id);
 
     receivedChallenges = List<Map<String, dynamic>>.from(response);
@@ -92,7 +94,19 @@ class ChallengeModel extends ChangeNotifier {
       return bDate.compareTo(aDate); // b zuerst = neueste oben
     });
 
-    // GIFs laden entfernt, nur noch wenn man direkt auf eine karte klickt, ansonsten overkill
+    // 🔥 GIFs aus Supabase übernehmen oder nachladen
+    for (var challenge in receivedChallenges) {
+      final id = challenge['id'].toString();
+      final gif = challenge['gif_url'];
+      if (gif != null && gif is String && gif.isNotEmpty) {
+        _gifUrls[id] = gif;
+      } else {
+        final exercise = challenge['exercise'] ?? '';
+        if (exercise.isNotEmpty) {
+          await fetchGifForChallenge(id, exercise);
+        }
+      }
+    }
 
     notifyListeners();
 
@@ -140,16 +154,32 @@ class ChallengeModel extends ChangeNotifier {
 
     final response = await _client
         .from('challenges')
-        .select('*, receiver:receiver_id(username, profile_image_url)')
+        .select(
+          '*, receiver:receiver_id(username, profile_image_url), gif_url',
+        ) // 👈 wichtig!
         .eq('sender_id', user.id);
 
     sentChallenges = List<Map<String, dynamic>>.from(response);
+
     sentChallenges.sort((a, b) {
       final aDate = DateTime.tryParse(a['created_at'] ?? '') ?? DateTime(1970);
       final bDate = DateTime.tryParse(b['created_at'] ?? '') ?? DateTime(1970);
-      return bDate.compareTo(aDate); // b zuerst = neueste oben
+      return bDate.compareTo(aDate);
     });
-    // GIFs laden entfernt, nur noch wenn man direkt auf eine karte klickt, ansonsten overkill
+
+    // 🔥 GIF-URLs aus DB übernehmen
+    for (var challenge in sentChallenges) {
+      final id = challenge['id'].toString();
+      final gif = challenge['gif_url'];
+      if (gif != null && gif is String && gif.isNotEmpty) {
+        _gifUrls[id] = gif;
+      } else {
+        final exercise = challenge['exercise'] ?? '';
+        if (exercise.isNotEmpty) {
+          await fetchGifForChallenge(id, exercise);
+        }
+      }
+    }
 
     notifyListeners();
 
@@ -197,11 +227,32 @@ class ChallengeModel extends ChangeNotifier {
 
     final response = await _client
         .from('challenges')
-        .select('*, sender:sender_id(username, profile_image_url)')
+        .select(
+          '*, sender:sender_id(username, profile_image_url), gif_url',
+        ) // 👈 wichtig
         .eq('sender_id', user.id);
 
     getChallenges = List<Map<String, dynamic>>.from(response);
-    // GIFs laden entfernt, nur noch wenn man direkt auf eine karte klickt, ansonsten overkill
+
+    getChallenges.sort((a, b) {
+      final aDate = DateTime.tryParse(a['created_at'] ?? '') ?? DateTime(1970);
+      final bDate = DateTime.tryParse(b['created_at'] ?? '') ?? DateTime(1970);
+      return bDate.compareTo(aDate);
+    });
+
+    // 🔥 GIFs übernehmen oder bei Bedarf laden
+    for (var challenge in getChallenges) {
+      final id = challenge['id'].toString();
+      final gif = challenge['gif_url'];
+      if (gif != null && gif is String && gif.isNotEmpty) {
+        _gifUrls[id] = gif;
+      } else {
+        final exercise = challenge['exercise'] ?? '';
+        if (exercise.isNotEmpty) {
+          await fetchGifForChallenge(id, exercise);
+        }
+      }
+    }
 
     notifyListeners();
 
@@ -276,10 +327,12 @@ class ChallengeModel extends ChangeNotifier {
 
   Future<void> fetchGifForChallenge(String challengeId, String exercise) async {
     if (_gifUrls.containsKey(challengeId)) return;
+
     final apiKey = dotenv.env['GIPHY_API_KEY'];
     if (apiKey == null) {
       throw Exception("GIPHY_API_KEY nicht gesetzt");
     }
+
     final query = Uri.encodeComponent(exercise);
     final url =
         'https://api.giphy.com/v1/gifs/search?api_key=$apiKey&q=$query&limit=1';
@@ -290,8 +343,16 @@ class ChallengeModel extends ChangeNotifier {
       final json = jsonDecode(response.body);
       if (json['data'] != null && json['data'].isNotEmpty) {
         final gifUrl = json['data'][0]['images']['original']['url'];
+
+        // 🔥 1. lokal speichern
         _gifUrls[challengeId] = gifUrl;
         notifyListeners();
+
+        // 🔥 2. in Supabase speichern
+        await _client
+            .from('challenges')
+            .update({'gif_url': gifUrl})
+            .eq('id', challengeId);
       }
     } else {
       print('❌ Giphy-API Fehler: ${response.statusCode}');
