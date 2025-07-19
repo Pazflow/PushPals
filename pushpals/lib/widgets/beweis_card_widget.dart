@@ -29,13 +29,17 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final challengeModel = Provider.of<ChallengeModel>(context, listen: false);
+      final challengeModel = Provider.of<ChallengeModel>(
+        context,
+        listen: false,
+      );
       final challenge = challengeModel.receivedChallenges.firstWhere(
         (c) => c['id'] == widget.challengeId,
         orElse: () => {},
       );
 
-      if (challenge.isNotEmpty && challenge['challenge_status'] == 'completed') {
+      if (challenge.isNotEmpty &&
+          challenge['challenge_status'] == 'completed') {
         setState(() {
           isProofSaved = true;
           savedProofImage = widget.proofModel.proofImageBytes;
@@ -77,63 +81,59 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Column(
-                  children: [
-                    Row(
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final double spacing = 16;
+                    final double buttonWidth =
+                        (constraints.maxWidth - spacing) / 2;
+                    return Wrap(
+                      spacing: spacing,
+                      runSpacing: spacing,
                       children: [
-                        Expanded(
-                          child: _buildButton(
-                            Icons.photo_camera,
-                            'Foto aufnehmen',
-                            () {
-                              print("Foto aufnehmen gedrückt");
-                            },
-                          ),
+                        _buildProofButton(
+                          icon: Icons.photo_camera,
+                          label: 'Foto\naufnehmen',
+                          width: buttonWidth,
+                          onPressed: () {
+                            print("Foto aufnehmen gedrückt");
+                          },
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildButton(
-                            Icons.videocam,
-                            'Video aufnehmen',
-                            () {
-                              print("Video aufnehmen gedrückt");
-                            },
-                          ),
+                        _buildProofButton(
+                          icon: Icons.videocam,
+                          label: 'Video\naufnehmen',
+                          width: buttonWidth,
+                          onPressed: () {
+                            print("Video aufnehmen gedrückt");
+                          },
+                        ),
+                        _buildProofButton(
+                          icon: Icons.image,
+                          label: 'Foto\nauswählen',
+                          width: buttonWidth,
+                          onPressed: () async {
+                            final userId =
+                                Supabase.instance.client.auth.currentUser?.id ??
+                                'unknown_user';
+                            await proofModel.pickImageAndUpload(
+                              userId,
+                              widget.challengeId,
+                            );
+                            setState(() {
+                              savedProofImage = proofModel.proofImageBytes;
+                            });
+                          },
+                        ),
+                        _buildProofButton(
+                          icon: Icons.video_library,
+                          label: 'Video\nauswählen',
+                          width: buttonWidth,
+                          onPressed: () {
+                            print("Video auswählen gedrückt");
+                          },
                         ),
                       ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildButton(
-                            Icons.image,
-                            'Foto auswählen',
-                            () async {
-                              final userId = Supabase.instance.client.auth.currentUser?.id ?? 'unknown_user';
-                              await proofModel.pickImageAndUpload(
-                                userId,
-                                widget.challengeId,
-                              );
-                              setState(() {
-                                savedProofImage = proofModel.proofImageBytes;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildButton(
-                            Icons.video_library,
-                            'Video auswählen',
-                            () {
-                              print("Video auswählen gedrückt");
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 16),
                 if (savedProofImage != null)
@@ -146,15 +146,26 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
                   AbsorbPointer(
                     absorbing: isProofSaved,
                     child: ButtonWidget(
-                      label: isProofSaved ? 'Challenge beendet' : 'Challenge bestätigen',
-                      backgroundColor: isProofSaved ? Colors.green : const Color(0xFFFFC107),
-                      foregroundColor: isProofSaved ? Colors.white : Colors.black,
+                      label:
+                          isProofSaved
+                              ? 'Challenge beendet'
+                              : 'Challenge bestätigen',
+                      backgroundColor:
+                          isProofSaved ? Colors.green : const Color(0xFFFFC107),
+                      foregroundColor:
+                          isProofSaved ? Colors.white : Colors.black,
                       onPressed: () async {
-                        await challengeModel.updateChallengeStatus(widget.challengeId, 'completed', profileModel);
+                        await challengeModel.updateChallengeStatus(
+                          widget.challengeId,
+                          'completed',
+                          profileModel,
+                        );
                         setState(() {
                           isProofSaved = true;
                         });
-                        print('Beweis gespeichert, Challenge auf completed gesetzt!');
+                        print(
+                          'Beweis gespeichert, Challenge auf completed gesetzt!',
+                        );
                       },
                     ),
                   ),
@@ -166,25 +177,36 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
     );
   }
 
-  Widget _buildButton(
-    IconData icon,
-    String label,
-    VoidCallback onPressed,
-  ) {
+  Widget _buildProofButton({
+    required IconData icon,
+    required String label,
+    required double width,
+    required VoidCallback onPressed,
+  }) {
     final bool block = isProofSaved;
-    final Color buttonColor = block ? Colors.grey.withOpacity(0.5) : const Color(0xFF2196F3);
+    final Color buttonColor =
+        block ? Colors.grey.withOpacity(0.5) : const Color(0xFF2196F3);
 
-    return AbsorbPointer(
-      absorbing: block,
-      child: ElevatedButton.icon(
-        onPressed: onPressed,
-        icon: Icon(icon, size: 20),
-        label: Text(label),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: buttonColor,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return SizedBox(
+      width: width,
+      height: 60,
+      child: AbsorbPointer(
+        absorbing: block,
+        child: ElevatedButton.icon(
+          onPressed: onPressed,
+          icon: Icon(icon, size: 20),
+          label: Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 14),
+          ),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: buttonColor,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
         ),
       ),
     );

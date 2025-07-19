@@ -78,7 +78,9 @@ class AppDesign extends StatelessWidget {
                         : null,
               )
               : null,
-      body: Padding(padding: const EdgeInsets.all(24), child: child),
+      body: SafeArea(
+        child: Padding(padding: const EdgeInsets.all(24), child: child),
+      ),
       floatingActionButton:
           showFloatingButton
               ? (floatingActionButton ??
@@ -92,46 +94,54 @@ class AppDesign extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar:
           showBottomNav
-              ? Container(
-                height: 55, // 🔥 Hier frei wählbar, z. B. 44, 48, 52
-                color: const Color(0xFF0084FF),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildNavItem(
-                      context,
-                      icon: Icons.home,
-                      label: 'Home',
-                      index: 0,
-                      isSelected: selectedIndex == 0,
-                      route: '/home',
-                    ),
-                    _buildNavItem(
-                      context,
-                      icon: Icons.leaderboard,
-                      label: 'Best of',
-                      index: 1,
-                      isSelected: selectedIndex == 1,
-                      route: '/leaderboard',
-                    ),
-                    const SizedBox(width: 48), // Abstand für FloatingButton
-                    _buildNavItem(
-                      context,
-                      icon: Icons.diversity_3,
-                      label: 'Friends',
-                      index: 2,
-                      isSelected: selectedIndex == 2,
-                      route: '/meine_freunde',
-                    ),
-                    _buildNavItem(
-                      context,
-                      icon: Icons.other_houses,
-                      label: 'Duell',
-                      index: 3,
-                      isSelected: selectedIndex == 3,
-                      route: '/send_challenges',
-                    ),
-                  ],
+              ? Padding(
+                padding: EdgeInsets.only(
+                  bottom:
+                      MediaQuery.of(context).padding.bottom > 0
+                          ? MediaQuery.of(context).padding.bottom
+                          : 8,
+                ),
+                child: Container(
+                  height: 55,
+                  color: const Color(0xFF0084FF),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildNavItem(
+                        context,
+                        icon: Icons.home,
+                        label: 'Home',
+                        index: 0,
+                        isSelected: selectedIndex == 0,
+                        route: '/home',
+                      ),
+                      _buildNavItem(
+                        context,
+                        icon: Icons.leaderboard,
+                        label: 'Best of',
+                        index: 1,
+                        isSelected: selectedIndex == 1,
+                        route: '/leaderboard',
+                      ),
+                      const SizedBox(width: 48),
+                      _buildNavItem(
+                        context,
+                        icon: Icons.diversity_3,
+                        label: 'Friends',
+                        index: 2,
+                        isSelected: selectedIndex == 2,
+                        route: '/meine_freunde',
+                      ),
+                      _buildNavItem(
+                        context,
+                        icon: Icons.other_houses,
+                        label: 'Duell',
+                        index: 3,
+                        isSelected: selectedIndex == 3,
+                        route: '/send_challenges',
+                      ),
+                    ],
+                  ),
                 ),
               )
               : null,
