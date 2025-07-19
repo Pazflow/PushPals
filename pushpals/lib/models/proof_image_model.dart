@@ -11,14 +11,28 @@ class ProofImageModel extends ChangeNotifier {
   String? proofImageUrl;
   String? lastImageName;
 
-  Future<void> pickImageAndUpload(String userId, String challengeId) async {
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+  Future<void> pickImageAndUpload(
+    String userId,
+    String challengeId, {
+    bool fromCamera = false,
+  }) async {
+    final picked = await ImagePicker().pickImage(
+      source: fromCamera ? ImageSource.camera : ImageSource.gallery,
+      imageQuality: 85,
+    );
+
     if (picked != null) {
       proofImageBytes = await picked.readAsBytes();
-      print("✅ Bild wurde aus Galerie geladen");
+      print(
+        fromCamera
+            ? "📸 Bild wurde mit Kamera aufgenommen"
+            : "🖼️ Bild wurde aus Galerie geladen",
+      );
       notifyListeners();
 
       await uploadProofImage(userId, challengeId);
+    } else {
+      print("❌ Kein Bild ausgewählt oder aufgenommen");
     }
   }
 

@@ -94,8 +94,18 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
                           icon: Icons.photo_camera,
                           label: 'Foto\naufnehmen',
                           width: buttonWidth,
-                          onPressed: () {
-                            print("Foto aufnehmen gedrückt");
+                          onPressed: () async {
+                            final userId =
+                                Supabase.instance.client.auth.currentUser?.id ??
+                                'unknown_user';
+                            await proofModel.pickImageAndUpload(
+                              userId,
+                              widget.challengeId,
+                              fromCamera: true,
+                            );
+                            setState(() {
+                              savedProofImage = proofModel.proofImageBytes;
+                            });
                           },
                         ),
                         _buildProofButton(
