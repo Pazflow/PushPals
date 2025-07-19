@@ -71,7 +71,7 @@ class ProfileSetupModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Daten in Supabase (public.users) speichern
+  // ✅ Überarbeitete saveUserData()-Methode
   Future<void> saveUserData() async {
     final authUser = _client.auth.currentUser;
     if (authUser == null) throw Exception("User not logged in");
@@ -79,23 +79,39 @@ class ProfileSetupModel extends ChangeNotifier {
     await uploadProfileImage(authUser.id);
 
     try {
-      await _client.from('users').upsert({
+      final updateData = {
         'id': authUser.id,
-        'username': username,
-        'birthday': birthday?.toIso8601String(),
-        'profile_image_url': profileImageUrl,
         'email': authUser.email,
-        'level': level,                             // ➕ mitnehmen
+        'profile_image_url': profileImageUrl,
+        'level': level,
         'friend_request_status': 'none',
-        'challenges_completed': challengesCompleted, // ➕ mitnehmen
-      });
+        'challenges_completed': challengesCompleted,
+      };
+
+      if (username != null && username!.isNotEmpty) {
+        updateData['username'] = username;
+      }
+
+      if (birthday != null) {
+        updateData['birthday'] = birthday!.toIso8601String();
+      }
+
+      await _client.from('users').upsert(updateData);
       print("Benutzerdaten erfolgreich gespeichert.");
     } catch (e) {
-      print("Fehler beim Speichern der Benutzerdaten");
+      print("Fehler beim Speichern der Benutzerdaten: $e");
     }
-    await Supabase.instance.client.auth.updateUser(
-      UserAttributes(data: {'display_name': username}),
-    );
+
+    // ✅ Fehler beim Auth-Update abfangen
+    try {
+      if (username != null && username!.isNotEmpty) {
+        await Supabase.instance.client.auth.updateUser(
+          UserAttributes(data: {'display_name': username}),
+        );
+      }
+    } catch (e) {
+      print("⚠️ Fehler beim auth.updateUser: $e");
+    }
   }
 
   void setUsername(String value) {

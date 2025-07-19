@@ -187,8 +187,10 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: passwordController,
               obscureText: true,
             ),
-            const SizedBox(height: 10),
-            ForgotPasswordLink(emailController: emailController),
+            if (emailExists == true) ...[
+              const SizedBox(height: 10),
+              ForgotPasswordLink(emailController: emailController),
+            ],
           ],
 
           const SizedBox(height: 25),

@@ -20,14 +20,15 @@ class SettingsCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Einstellungen',
+              'Einstellungen folgen...',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
+            /*
             const SizedBox(height: 16),
-            _buildSwitchTile('Benachrichtigungen', true),
+            //_buildSwitchTile('Benachrichtigungen', true),
             _buildSwitchTile('Sound', true),
             const SizedBox(height: 16),
             Row(
@@ -48,6 +49,8 @@ class SettingsCard extends StatelessWidget {
             //_buildSettingsRow(Icons.fitness_center, 'Übungseinstellungen'),
             //_buildSettingsRow(Icons.emoji_events, 'Alle Achievements'),
             const Divider(color: Colors.white24, height: 32),
+            */
+            const SizedBox(height: 35),
             TextButton.icon(
               onPressed: () async {
                 await Supabase.instance.client.auth.signOut();
@@ -66,7 +69,7 @@ class SettingsCard extends StatelessWidget {
       ),
     );
   }
-
+  /* --> Auskommentiert --> muss wieder eingefügt werden, sobald Einstellungen verfügbar sind
   Widget _buildSwitchTile(String label, bool value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,19 +79,6 @@ class SettingsCard extends StatelessWidget {
       ],
     );
   }
-
-  /*Widget _buildSettingsRow(IconData icon, String label) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: Icon(icon, color: Colors.blue),
-      title: Text(label, style: const TextStyle(color: Colors.white)),
-      trailing: const Icon(
-        Icons.arrow_forward_ios,
-        color: Colors.white,
-        size: 16,
-      ),
-      onTap: () {},
-    );
-  }
   */
+
 }
