@@ -4,7 +4,7 @@ import 'package:pushpals/models/proof_image_model.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'package:pushpals/models/profile_setup_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:pushpals/widgets/button_allg_widget.dart';
+import 'package:pushpals/widgets/basebutton_widget.dart';
 import 'dart:typed_data';
 
 class BeweisCardWidget extends StatefulWidget {
