@@ -205,11 +205,15 @@ class _BeweisCardWidgetState extends State<BeweisCardWidget> {
         child: ElevatedButton.icon(
           onPressed: onPressed,
           icon: Icon(icon, size: 20),
-          label: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 14),
+          label: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 14),
+            ),
           ),
+
           style: ElevatedButton.styleFrom(
             backgroundColor: buttonColor,
             foregroundColor: Colors.white,

@@ -23,9 +23,11 @@ class PlayerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ImageProvider avatarImage =
-        avatarUrl.startsWith('http')
-            ? NetworkImage(avatarUrl)
-            : AssetImage(avatarUrl) as ImageProvider;
+        avatarUrl.isNotEmpty
+            ? (avatarUrl.startsWith('http')
+                ? NetworkImage(avatarUrl)
+                : AssetImage(avatarUrl) as ImageProvider)
+            : const AssetImage('assets/images/IT_Nerd.png');
 
     Widget iconWidget;
     if (icon is IconData) {
