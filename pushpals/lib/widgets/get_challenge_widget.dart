@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'status_card_widget.dart';
-import 'aktiv_card_widget.dart';
+import 'active_card_widget.dart';
 import 'challenge_aktiv_card_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
 

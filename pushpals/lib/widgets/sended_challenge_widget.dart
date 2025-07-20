@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'status_card_widget.dart';
-import 'aktiv_card_widget.dart';
+import 'active_card_widget.dart';
 import 'challenge_aktiv_card_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
 
@@ -33,7 +33,7 @@ class SendenChallengeWidget extends StatelessWidget {
         AktivCardWidget(
           profileName: challengeData['exercise'] ?? 'Unbekannt',
           subtitle:
-              'Hat ${challengeData['receiver']['username']} herausgefordert',
+              'Ich habe ${challengeData['receiver']['username']} herausgefordert',
           imagePath:
               (challengeData['receiver']['profile_image_url'] != null &&
                       (challengeData['receiver']['profile_image_url'] as String)

@@ -5,14 +5,14 @@ import 'package:pushpals/screens/my_friends_screen.dart';
 // Importiere deine Screens
 import '../screens/start_login_screen.dart';
 import '../screens/home_screen.dart';
-import '../screens/after_registrierung_screen.dart';
-import '../screens/eig_profile_screen.dart';
-import '../screens/freund_einladen_screen.dart';
+import '../screens/signup_screen.dart';
+import '../screens/own_profile_screen.dart';
+import '../screens/invite_friends_screen.dart';
 import '../screens/get_challenge_screen.dart';
 import '../screens/add_challenge_screen.dart';
 import '../screens/send_challenge_screen.dart';
 import '../screens/leaderboard_screen.dart';
-import '../screens/passwort_vergessen_screen.dart';
+import '../screens/password_reset_screen.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 

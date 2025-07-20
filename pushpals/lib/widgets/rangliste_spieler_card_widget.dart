@@ -7,7 +7,7 @@ class PlayerTile extends StatelessWidget {
   final int challenge;
   final String avatarUrl;
   final Color color;
-  final dynamic icon; // <- erlaubt IconData oder String
+  final dynamic icon; // IconData oder String
 
   const PlayerTile({
     super.key,
@@ -44,22 +44,47 @@ class PlayerTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Wichtig!
         children: [
-          iconWidget,
-          const SizedBox(width: 8),
-          CircleAvatar(backgroundImage: avatarImage, radius: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              name,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
+          // Linke Seite: Icon + Avatar + Name
+          Row(
+            children: [
+              iconWidget,
+              const SizedBox(width: 8),
+              CircleAvatar(backgroundImage: avatarImage, radius: 20),
+              const SizedBox(width: 12),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  name,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ],
           ),
-          Text('Level $level', style: const TextStyle(color: Colors.white70)),
-          const SizedBox(width: 12),
-          Text(':', style: const TextStyle(color: Colors.white70)),
-          const SizedBox(width: 12),
-          Text('Duelle $challenge', style: const TextStyle(color: Colors.white70)),
+
+          // Rechte Seite: Level : Duelle
+          Row(
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'Level $level',
+                  style: const TextStyle(color: Colors.white70),
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Text(':', style: TextStyle(color: Colors.white70)),
+              const SizedBox(width: 8),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'Duelle $challenge',
+                  style: const TextStyle(color: Colors.white70),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );

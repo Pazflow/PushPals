@@ -53,14 +53,19 @@ class AppDesign extends StatelessWidget {
                         : null,
                 title:
                     title != null
-                        ? Text(
-                          title!,
-                          style: GoogleFonts.michroma(
-                            color: const Color(0xFF06101F),
-                            fontWeight: FontWeight.bold,
+                        ? FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            title!,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.michroma(
+                              color: const Color(0xFF06101F),
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         )
                         : null,
+
                 centerTitle: false,
                 actions:
                     showProfile

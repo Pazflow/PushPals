@@ -4,7 +4,7 @@ import 'package:pushpals/models/challenge_model.dart';
 import 'package:pushpals/models/proof_image_model.dart';
 import 'package:pushpals/widgets/beweis_card_widget.dart';
 import 'package:pushpals/widgets/status_card_widget.dart';
-import 'package:pushpals/widgets/aktiv_card_widget.dart';
+import 'package:pushpals/widgets/active_card_widget.dart';
 import 'package:pushpals/widgets/challenge_aktiv_card_widget.dart';
 import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
@@ -46,7 +46,7 @@ class GetChallengeScreen extends StatelessWidget {
             StatusDisplayWidget(status: statusEnum),
             AktivCardWidget(
               profileName: challenge['exercise'] ?? 'Unbekannt',
-              subtitle: 'Von ${challenge['sender']['username'] ?? 'Unbekannt'}',
+              subtitle: 'Herausgefordert von ${challenge['sender']['username'] ?? 'Unbekannt'}',
               imagePath:
                   (challenge['sender']['profile_image_url'] != null &&
                           (challenge['sender']['profile_image_url'] as String)
