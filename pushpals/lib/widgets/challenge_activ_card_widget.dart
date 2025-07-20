@@ -6,7 +6,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
   final String timeLimit;
   final String mode;
   final int repetitions;
-  final String? gifUrl; // ✅ NEU
+  final String? gifUrl; 
 
   const ChallengeAktivCardWidget({
     super.key,
@@ -15,7 +15,7 @@ class ChallengeAktivCardWidget extends StatelessWidget {
     required this.timeLimit,
     required this.mode,
     required this.repetitions,
-    this.gifUrl, // ✅ NEU
+    this.gifUrl, 
   });
 
   @override

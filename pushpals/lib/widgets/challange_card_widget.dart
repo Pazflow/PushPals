@@ -76,7 +76,7 @@ class ChallengeCard extends StatelessWidget {
                       fontSize: 13,
                     ),
                   ),
-                  if (status == ChallengeStatus.pending) // Nur wenn pending
+                  if (status == ChallengeStatus.pending) 
                     Row(
                       children: [
                         IconButton(

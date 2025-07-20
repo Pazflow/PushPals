@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/profile_setup_model.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/eigenes_profil_card_widget.dart';
-import 'package:pushpals/widgets/einstellungen_card_widget.dart';
-import 'package:pushpals/widgets/statistik_card_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
+import 'package:pushpals/widgets/own_profile_card_widget.dart';
+import 'package:pushpals/widgets/setting_card_widget.dart';
+import 'package:pushpals/widgets/statistic_card_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:intl/intl.dart';
 

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'package:pushpals/models/proof_image_model.dart';
-import 'package:pushpals/widgets/beweis_card_widget.dart';
+import 'package:pushpals/widgets/proof_card_widget.dart';
 import 'package:pushpals/widgets/status_card_widget.dart';
 import 'package:pushpals/widgets/active_card_widget.dart';
-import 'package:pushpals/widgets/challenge_aktiv_card_widget.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/challenge_activ_card_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class GetChallengeScreen extends StatelessWidget {
@@ -59,14 +59,14 @@ class GetChallengeScreen extends StatelessWidget {
                           .isNotEmpty),
             ),
 
-            // ✅ GIF kommt jetzt direkt aus Supabase-Spalte
+            
             ChallengeAktivCardWidget(
               title: selectedChallenge?['exercise'] ?? 'Übung',
               fallbackText: 'Kein GIF vorhanden',
               timeLimit: selectedChallenge?['time_limit'].toString() ?? '0',
               mode: selectedChallenge?['mode'] ?? 'Standard',
               repetitions: selectedChallenge?['repetitions'] ?? 0,
-              gifUrl: selectedChallenge?['gif_url'] ?? '', // 👈 WICHTIG!
+              gifUrl: selectedChallenge?['gif_url'] ?? '', 
             ),
 
             BeweisCardWidget(challengeId: challengeId, proofModel: proofModel),

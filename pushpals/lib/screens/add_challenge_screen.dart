@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:pushpals/widgets/button_allg_widget.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/basebutton_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
 import 'package:pushpals/widgets/dropdown_card_widget.dart';
 import 'package:pushpals/widgets/dropdown_switch_card_widget.dart';
 import 'package:pushpals/models/challenge_model.dart';

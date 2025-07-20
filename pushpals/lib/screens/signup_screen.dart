@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pushpals/widgets/bild_avatar_widget.dart';
-import 'package:pushpals/widgets/button_allg_widget.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/eingabe_feld_widget.dart';
-import 'package:pushpals/models/profile_setup_model.dart'; // <- hinzufügen
+import 'package:pushpals/widgets/image_avatar_widget.dart';
+import 'package:pushpals/widgets/basebutton_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
+import 'package:pushpals/widgets/input_field_widget.dart';
+import 'package:pushpals/models/profile_setup_model.dart';
 
 class ProfileSetupWidget extends StatefulWidget {
   const ProfileSetupWidget({super.key});
@@ -58,7 +58,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
           GestureDetector(
             onTap: () async {
               await model.pickImage();
-              setState(() {}); // Bild aktualisieren
+              setState(() {}); 
             },
             child: AppAvatar(
               outerRadius: 70,
@@ -66,7 +66,7 @@ class _ProfileSetupWidgetState extends State<ProfileSetupWidget> {
               icon: Icons.add_a_photo,
               imageBytes:
                   model
-                      .profileImageBytes, // <- Muss im Avatar Widget unterstützt werden
+                      .profileImageBytes, 
             ),
           ),
           const SizedBox(height: 32),

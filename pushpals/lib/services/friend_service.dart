@@ -38,13 +38,13 @@ class FriendService {
     final userId = client.auth.currentUser?.id;
     if (userId == null) return;
 
-    // Einseitig löschen
+    
     await client.from('friends').delete().match({
       'user_id': userId,
       'friend_id': friendId,
     });
 
-    // Optional zweiseitig löschen:
+    
     await client.from('friends').delete().match({
       'user_id': friendId,
       'friend_id': userId,

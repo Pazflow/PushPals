@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
 import 'package:pushpals/widgets/sended_challenge_widget.dart';
 
 class SendChallengeScreen extends StatefulWidget {

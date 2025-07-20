@@ -27,11 +27,17 @@ class AktivCardWidget extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundImage: isNetworkImage
-                  ? NetworkImage(imagePath)
-                  : AssetImage(imagePath) as ImageProvider,
+              backgroundColor: Colors.grey.shade800,
               radius: 24,
+              backgroundImage:
+                  isNetworkImage
+                      ? NetworkImage(imagePath)
+                      : AssetImage(imagePath) as ImageProvider,
+              onBackgroundImageError: (error, stackTrace) {
+                print("Fehler beim Laden des Bildes: $error");
+              },
             ),
+
             const SizedBox(width: 12),
             Expanded(
               child: Column(

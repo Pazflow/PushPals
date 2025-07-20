@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Profile Setup
+
 class ProfileSetupModel extends ChangeNotifier {
   final SupabaseClient _client = Supabase.instance.client;
 
@@ -12,12 +12,12 @@ class ProfileSetupModel extends ChangeNotifier {
   Uint8List? profileImageBytes;
   String? profileImageUrl;
 
-  int level = 0;                // ➕ NEU
-  int challengesCompleted = 0;  // ➕ NEU
+  int level = 0;                
+  int challengesCompleted = 0;  
 
   bool isLoading = false;
 
-  // Bild auswählen (funktioniert auf Web & Mobile)
+  
   Future<void> pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (picked != null) {
@@ -26,7 +26,7 @@ class ProfileSetupModel extends ChangeNotifier {
     }
   }
 
-  // Bild in Supabase hochladen (für Web und Mobile)
+  
   Future<void> uploadProfileImage(String userId) async {
     if (profileImageBytes == null) return;
 
@@ -63,7 +63,7 @@ class ProfileSetupModel extends ChangeNotifier {
     }
     profileImageUrl = response['profile_image_url'] ?? '';
 
-    // ➕ NEU: Level und Challenges laden
+    
     level = response['level'] ?? 1;
     challengesCompleted = response['challenges_completed'] ?? 0;
 
@@ -71,7 +71,7 @@ class ProfileSetupModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ✅ Überarbeitete saveUserData()-Methode
+  
   Future<void> saveUserData() async {
     final authUser = _client.auth.currentUser;
     if (authUser == null) throw Exception("User not logged in");
@@ -102,7 +102,7 @@ class ProfileSetupModel extends ChangeNotifier {
       print("Fehler beim Speichern der Benutzerdaten: $e");
     }
 
-    // ✅ Fehler beim Auth-Update abfangen
+    
     try {
       if (username != null && username!.isNotEmpty) {
         await Supabase.instance.client.auth.updateUser(

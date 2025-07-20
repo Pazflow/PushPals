@@ -3,19 +3,18 @@ import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'status_card_widget.dart';
 import 'active_card_widget.dart';
-import 'challenge_aktiv_card_widget.dart';
+import 'challenge_activ_card_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class SendenChallengeWidget extends StatelessWidget {
   final Map<String, dynamic> challengeData;
-  final String? gifUrl; // ✅ NEU
+  final String? gifUrl; 
 
   const SendenChallengeWidget({
     super.key,
     required this.challengeData,
-    this.gifUrl, // ✅ NEU
+    this.gifUrl,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +22,20 @@ class SendenChallengeWidget extends StatelessWidget {
     final ChallengeStatus statusEnum = convertStatusStringToEnum(statusString);
 
     final challengeId = challengeData['id'].toString();
-    final gifUrl = context
-        .read<ChallengeModel>()
-        .gifUrls[challengeId]; // ✅ Hier kommt das gif für genau diese Challenge
+
+    
+    final String? imageUrl =
+        statusEnum == ChallengeStatus.completed
+            ? challengeData['proof_picture_url']
+            : context.read<ChallengeModel>().gifUrls[challengeId];
+
+    
+    final profileUrl = challengeData['receiver']['profile_image_url'];
+    final isValidProfileImage =
+        profileUrl != null &&
+        profileUrl is String &&
+        profileUrl.isNotEmpty &&
+        profileUrl.startsWith('http');
 
     return Column(
       children: [
@@ -35,15 +45,8 @@ class SendenChallengeWidget extends StatelessWidget {
           subtitle:
               'Ich habe ${challengeData['receiver']['username']} herausgefordert',
           imagePath:
-              (challengeData['receiver']['profile_image_url'] != null &&
-                      (challengeData['receiver']['profile_image_url'] as String)
-                          .isNotEmpty)
-                  ? challengeData['receiver']['profile_image_url']
-                  : 'assets/images/IT_Nerd.png',
-          isNetworkImage:
-              (challengeData['receiver']['profile_image_url'] != null &&
-                  (challengeData['receiver']['profile_image_url'] as String)
-                      .isNotEmpty),
+              isValidProfileImage ? profileUrl : 'assets/images/IT_Nerd.png',
+          isNetworkImage: isValidProfileImage,
         ),
         ChallengeAktivCardWidget(
           title: challengeData['exercise'] ?? 'Übung',
@@ -51,7 +54,7 @@ class SendenChallengeWidget extends StatelessWidget {
           timeLimit: challengeData['time_limit'] ?? 'unbegrenzt',
           mode: 'Standard',
           repetitions: challengeData['repetitions'] ?? 0,
-          gifUrl: gifUrl, // ✅ korrekt übergeben
+          gifUrl: imageUrl, 
         ),
       ],
     );

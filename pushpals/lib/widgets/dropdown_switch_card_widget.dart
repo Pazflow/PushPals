@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/eingabe_feld_widget.dart';
+import 'package:pushpals/widgets/input_field_widget.dart';
 
 class DropdownSwitchCardWidget extends StatelessWidget {
   final String title;

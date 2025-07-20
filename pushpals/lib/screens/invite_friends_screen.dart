@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/freunde_einladen_card_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
+import 'package:pushpals/widgets/invite_friend_card_widget.dart';
 
 class FriendSearchScreen extends StatefulWidget {
   const FriendSearchScreen({super.key});

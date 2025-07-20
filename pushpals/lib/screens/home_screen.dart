@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'package:pushpals/models/profile_setup_model.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
 import 'package:pushpals/widgets/challange_card_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
 import 'package:go_router/go_router.dart';
@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   final status = convertStatusStringToEnum(statusString);
                   final gifUrl =
                       challengeModel.gifUrls[challenge['id'].toString()] ??
-                      ''; // ✅ GIF holen
+                      ''; 
 
                   return GestureDetector(
                     onTap: () async {
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               : 'assets/images/IT_Nerd.png',
 
                       status: status,
-                      gifUrl: gifUrl, // ✅ GIF übergeben
+                      gifUrl: gifUrl, 
                       onAccept: () async {
                         await Provider.of<ChallengeModel>(
                           context,

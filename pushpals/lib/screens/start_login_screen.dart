@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/button_allg_widget.dart';
-import 'package:pushpals/widgets/eingabe_feld_widget.dart';
-import 'package:pushpals/widgets/passwort_vergessen_reset_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
+import 'package:pushpals/widgets/basebutton_widget.dart';
+import 'package:pushpals/widgets/input_field_widget.dart';
+import 'package:pushpals/widgets/password_reset_widget.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  bool? emailExists; // null = noch nicht geprüft
+  bool? emailExists;
   bool isChecking = false;
   bool showEmailFormatError = false;
 
@@ -158,13 +158,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 showEmailFormatError = false;
               });
 
-              // Erst prüfen, ob E-Mail gültig ist (z. B. enthält @, .de, .com ...)
               if (isValidEmail(trimmed)) {
-                checkEmailExists(trimmed); // Supabase prüfen
+                checkEmailExists(trimmed);
               } else if (trimmed.endsWith('.de') ||
                   trimmed.endsWith('.com') ||
                   trimmed.endsWith('.org')) {
-                // Nur wenn Benutzer offenbar "fertig" ist → Fehler anzeigen
                 setState(() {
                   showEmailFormatError = true;
                 });

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
-import 'package:pushpals/widgets/rangliste_spieler_card_widget.dart';
-import 'package:pushpals/widgets/statistik_card_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
+import 'package:pushpals/widgets/bestof_card_widget.dart';
+import 'package:pushpals/widgets/statistic_card_widget.dart';
 import 'package:pushpals/models/friend_model.dart';
-import 'package:supabase_flutter/supabase_flutter.dart'; // <-- damit fetchFriendsWithStats verfügbar ist
+import 'package:supabase_flutter/supabase_flutter.dart'; 
 
 class LeaderboardScreen extends StatefulWidget {
   const LeaderboardScreen({super.key});
@@ -35,7 +35,7 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
 
     data.add(userResponse);
 
-    // Sortiere nach Level absteigend
+    
     data.sort((a, b) => (b['level'] ?? 0).compareTo(a['level'] ?? 0));
 
     setState(() {

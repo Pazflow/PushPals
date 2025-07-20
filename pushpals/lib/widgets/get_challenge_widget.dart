@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:pushpals/models/challenge_model.dart';
 import 'status_card_widget.dart';
 import 'active_card_widget.dart';
-import 'challenge_aktiv_card_widget.dart';
+import 'challenge_activ_card_widget.dart';
 import 'package:pushpals/enums/enum_challenge_status.dart';
 
 class GetChallengeWidget extends StatelessWidget {

@@ -5,7 +5,7 @@ class AvatarCard extends StatelessWidget {
   final String name;
   final String birthdate;
   final String avatarPath;
-  final Uint8List? profileImageBytes; // ➕ hinzugefügt
+  final Uint8List? profileImageBytes; 
   final VoidCallback? onAvatarTap;
 
   const AvatarCard({

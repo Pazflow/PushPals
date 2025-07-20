@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pushpals/widgets/button_allg_widget.dart';
-import 'package:pushpals/widgets/kompletes_app_design_widget.dart';
+import 'package:pushpals/widgets/basebutton_widget.dart';
+import 'package:pushpals/widgets/app_design_own_widget.dart';
 import 'package:pushpals/widgets/friend_tile_widget.dart';
 import 'package:pushpals/services/friend_service.dart';
 import 'package:pushpals/models/friend_model.dart';
-import 'package:pushpals/widgets/freunde_anfragen_dynamisch_widget.dart';
+import 'package:pushpals/widgets/friend_request_dynamic_widget.dart';
 
 class MyFriendsScreen extends StatefulWidget {
   const MyFriendsScreen({super.key});
@@ -99,7 +99,7 @@ class _MyFriendsScreenState extends State<MyFriendsScreen> {
 
                         if (confirm == true) {
                           await FriendService().deleteFriend(friend.id);
-                          await _loadFriends(); // Liste aktualisieren
+                          await _loadFriends(); 
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

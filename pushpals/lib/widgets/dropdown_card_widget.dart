@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DropdownCardWidget extends StatelessWidget {
   final String title;
   final String dropdownHint;
-  final List<Map<String, String>> items; // <-- geändert: ID & Label
+  final List<Map<String, String>> items; 
   final String? selectedValue;
   final ValueChanged<String?>? onChanged;
 
@@ -62,7 +62,7 @@ class DropdownCardWidget extends StatelessWidget {
               items:
                   items.map((item) {
                     return DropdownMenuItem<String>(
-                      value: item['id'], // <-- ID als Value
+                      value: item['id'], 
                       child: Text(
                         item['label'] ?? '',
                         style: const TextStyle(color: Colors.white),
